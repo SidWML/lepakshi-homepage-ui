@@ -362,11 +362,11 @@ const ProductCarousel = ({
     <div className="relative">
       {/* Carousel Container */}
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-5">
+        <div className="flex gap-4">
           {products.map((product, index) => (
             <div
               key={`${product.name}-${index}`}
-              className="flex-none w-[calc(50%-10px)] sm:w-[calc(33.333%-14px)] md:w-[calc(25%-15px)] lg:w-[calc(20%-16px)]"
+              className="flex-none w-[75%] sm:w-[45%] md:w-[30%] lg:w-[23%] xl:w-[18%]"
             >
               <ProductCard product={product} showCategory={showCategory} dark={darkMode} />
             </div>
@@ -487,7 +487,7 @@ export default function Home() {
 
         {/* Hero Content */}
         <motion.div
-          className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20"
+          className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6 pt-20 pb-32"
           style={{ y: heroY, opacity: heroOpacity }}
         >
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[700px] pointer-events-none">
@@ -560,7 +560,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.5 }}
           >
-            <span className="text-white/40 text-xs tracking-[0.3em] uppercase">Scroll</span>
+            {/* <span className="text-white/40 text-xs tracking-[0.3em] uppercase">Scroll</span> */}
             <motion.div
               className="w-[1px] h-16 bg-gradient-to-b from-[#c9a227] to-transparent"
               animate={{ y: [0, 10, 0] }}
@@ -686,12 +686,12 @@ export default function Home() {
           >
             <motion.a
               href="#"
-              className="inline-flex items-center gap-3 px-10 py-4 border-2 border-[#c9a227] text-[#c9a227] font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               VIEW ALL PRODUCTS
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </motion.a>
           </motion.div>
         </div>
@@ -768,12 +768,12 @@ export default function Home() {
           >
             <motion.a
               href="#"
-              className="inline-flex items-center gap-3 px-10 py-4 border-2 border-[#c9a227] text-[#c9a227] font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              VIEW ALL SPIRITUAL PRODUCTS
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              VIEW ALL SPIRITUAL
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </motion.a>
           </motion.div>
         </div>
@@ -858,7 +858,7 @@ export default function Home() {
             <h2 className="font-[family-name:var(--font-playfair)] text-5xl md:text-6xl text-[#1a1a1a]">GI Tagged <span className="italic text-[#c9a227]">Collectibles</span></h2>
           </motion.div>
           <motion.div
-            className="flex justify-center gap-4 mb-12"
+            className="flex justify-center gap-2 sm:gap-4 mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -866,7 +866,7 @@ export default function Home() {
           >
             <motion.button
               onClick={() => setActiveTab("kondapalli")}
-              className={`px-8 py-4 text-sm tracking-wider transition-all font-medium ${activeTab === "kondapalli" ? "bg-[#c9a227] text-white shadow-lg" : "bg-[#f7f5f0] text-[#666] hover:bg-[#eae6dd]"}`}
+              className={`px-4 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm tracking-wider transition-all font-medium whitespace-nowrap ${activeTab === "kondapalli" ? "bg-[#c9a227] text-white shadow-lg" : "bg-[#f7f5f0] text-[#666] hover:bg-[#eae6dd]"}`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -874,7 +874,7 @@ export default function Home() {
             </motion.button>
             <motion.button
               onClick={() => setActiveTab("etikoppaka")}
-              className={`px-8 py-4 text-sm tracking-wider transition-all font-medium ${activeTab === "etikoppaka" ? "bg-[#c9a227] text-white shadow-lg" : "bg-[#f7f5f0] text-[#666] hover:bg-[#eae6dd]"}`}
+              className={`px-4 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm tracking-wider transition-all font-medium whitespace-nowrap ${activeTab === "etikoppaka" ? "bg-[#c9a227] text-white shadow-lg" : "bg-[#f7f5f0] text-[#666] hover:bg-[#eae6dd]"}`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -891,12 +891,12 @@ export default function Home() {
           >
             <motion.a
               href="#"
-              className="inline-flex items-center gap-3 px-10 py-4 border-2 border-[#c9a227] text-[#c9a227] font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              VIEW ALL {activeTab === "kondapalli" ? "KONDAPALLI" : "ETIKOPPAKA"} PRODUCTS
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              VIEW ALL {activeTab === "kondapalli" ? "KONDAPALLI" : "ETIKOPPAKA"}
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </motion.a>
           </motion.div>
         </div>
@@ -928,12 +928,12 @@ export default function Home() {
           >
             <motion.a
               href="#"
-              className="inline-flex items-center gap-3 px-10 py-4 border-2 border-[#7cb69d] text-[#7cb69d] font-medium tracking-wider hover:bg-[#7cb69d] hover:text-white transition-all"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#7cb69d] text-[#7cb69d] text-sm sm:text-base font-medium tracking-wider hover:bg-[#7cb69d] hover:text-white transition-all whitespace-nowrap"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              VIEW ALL TRIBAL PRODUCTS
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              VIEW ALL TRIBAL
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </motion.a>
           </motion.div>
         </div>
@@ -1004,12 +1004,12 @@ export default function Home() {
           >
             <motion.a
               href="#"
-              className="inline-flex items-center gap-3 px-10 py-4 border-2 border-[#c9a227] text-[#c9a227] font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              VIEW ALL NATURAL FIBRE COLLECTIONS
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              VIEW ALL COLLECTIONS
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </motion.a>
           </motion.div>
         </div>
@@ -1243,12 +1243,12 @@ export default function Home() {
           >
             <motion.a
               href="#"
-              className="inline-flex items-center gap-3 px-10 py-4 border-2 border-[#596C45] text-[#596C45] font-medium tracking-wider hover:bg-[#596C45] hover:text-white transition-all"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#596C45] text-[#596C45] text-sm sm:text-base font-medium tracking-wider hover:bg-[#596C45] hover:text-white transition-all whitespace-nowrap"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              EXPLORE ALL CRAFT STORIES
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              EXPLORE ALL STORIES
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </motion.a>
           </motion.div>
         </div>
