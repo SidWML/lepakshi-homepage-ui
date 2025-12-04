@@ -1,26 +1,191 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand Colors */
+  --cream: #f7f5f0;
+  --gold: #c9a227;
+  --gold-dark: #b8922a;
+  --gold-light: #f7d794;
+  --navy: #1a3a52;
+  --brown: #8b6914;
+  --dark: #1a1a1a;
+  --warm-bg: #2d2a26;
+
+  /* Extended Palette */
+  --dutch-white: #F5E8C8;
+  --avocado: #596C45;
+  --avocado-light: #7a9460;
+  --xanthous: #E0AE31;
+  --auburn: #A53430;
+  --prussian-blue: #103248;
+
+  /* ===========================================
+     ASPECT RATIO SYSTEM
+     Consistent ratios across all media types
+     =========================================== */
+
+  /* Hero & Banner Images */
+  --aspect-hero: 16 / 9;           /* Hero banners, full-width images */
+  --aspect-hero-mobile: 4 / 5;     /* Hero on mobile devices */
+
+  /* Category Cards */
+  --aspect-category: 4 / 5;        /* Main category cards */
+  --aspect-category-wide: 16 / 9;  /* Wide category banners */
+  --aspect-category-square: 1 / 1; /* Square category tiles */
+
+  /* Product Images */
+  --aspect-product: 3 / 4;         /* Standard product cards */
+  --aspect-product-thumb: 1 / 1;   /* Product thumbnails/gallery */
+  --aspect-product-detail: 4 / 5;  /* Product detail main image */
+
+  /* Featured Images */
+  --aspect-featured: 4 / 5;        /* Featured product cards */
+  --aspect-featured-wide: 3 / 2;   /* Featured wide banners */
+
+  /* Collection & Gallery */
+  --aspect-collection: 3 / 4;      /* Collection preview cards */
+  --aspect-gallery: 1 / 1;         /* Gallery grid items */
+
+  /* Special Sections */
+  --aspect-spiritual: 1 / 1;       /* Spiritual product cards */
+  --aspect-tribal: 4 / 5;          /* Tribal section cards */
+  --aspect-premium: 3 / 4;         /* Premium section cards */
+
+  /* Artisan/Story Images */
+  --aspect-artisan: 4 / 5;         /* Artisan profile images */
+  --aspect-story: 16 / 9;          /* Story/video thumbnails */
+
+  /* Utility */
+  --aspect-icon: 1 / 1;            /* Icon containers */
+  --aspect-logo: 3 / 1;            /* Logo containers */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* Tablet breakpoint adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --aspect-hero: 21 / 9;
+    --aspect-category: 1 / 1;
+    --aspect-product: 4 / 5;
   }
 }
 
+/* Desktop breakpoint adjustments */
+@media (min-width: 1024px) {
+  :root {
+    --aspect-hero: 21 / 9;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  background: var(--cream);
+  color: #2d2d2d;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* Aspect Ratio Utility Classes */
+.aspect-hero { aspect-ratio: var(--aspect-hero); }
+.aspect-hero-mobile { aspect-ratio: var(--aspect-hero-mobile); }
+.aspect-category { aspect-ratio: var(--aspect-category); }
+.aspect-category-wide { aspect-ratio: var(--aspect-category-wide); }
+.aspect-category-square { aspect-ratio: var(--aspect-category-square); }
+.aspect-product { aspect-ratio: var(--aspect-product); }
+.aspect-product-thumb { aspect-ratio: var(--aspect-product-thumb); }
+.aspect-product-detail { aspect-ratio: var(--aspect-product-detail); }
+.aspect-featured { aspect-ratio: var(--aspect-featured); }
+.aspect-featured-wide { aspect-ratio: var(--aspect-featured-wide); }
+.aspect-collection { aspect-ratio: var(--aspect-collection); }
+.aspect-gallery { aspect-ratio: var(--aspect-gallery); }
+.aspect-spiritual { aspect-ratio: var(--aspect-spiritual); }
+.aspect-tribal { aspect-ratio: var(--aspect-tribal); }
+.aspect-premium { aspect-ratio: var(--aspect-premium); }
+.aspect-artisan { aspect-ratio: var(--aspect-artisan); }
+.aspect-story { aspect-ratio: var(--aspect-story); }
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Shimmer Animation for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Fade In Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Scrollbar Hide */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Image Container - ensures consistent sizing */
+.img-container {
+  position: relative;
+  overflow: hidden;
+  background-color: #f7f5f0;
+}
+
+.img-container img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Gradient Overlays */
+.overlay-gradient-bottom {
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+}
+
+.overlay-gradient-dark {
+  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
 }
