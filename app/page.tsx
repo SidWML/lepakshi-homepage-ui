@@ -533,7 +533,7 @@ export default function Home() {
         <motion.header
           className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
             mobileMenuOpen || isScrolled
-              ? "bg-white border-b border-[#e5e5e5] shadow-sm"
+              ? "bg-[#f3e6c6]  border-[#e5e5e5] shadow-sm"
               : "bg-transparent border-b border-transparent"
           }`}
           initial={{ y: -100 }}
