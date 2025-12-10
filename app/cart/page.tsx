@@ -75,7 +75,7 @@ const CartItem = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -100 }}
       transition={{ duration: 0.3 }}
-      className="bg-white border border-[#e5e5e5] rounded-lg overflow-hidden"
+      className="bg-white border-2 border-[#e5d5a8] rounded-lg overflow-hidden hover:shadow-xl hover:border-[#c9a227] transition-all group"
     >
       <div className="flex flex-col sm:flex-row">
         {/* Product Image */}
@@ -260,21 +260,36 @@ export default function CartPage() {
     <>
       <Header variant="solid" />
 
-      <main className="pt-20 bg-[#fafafa] min-h-screen">
+      <main className="pt-20 min-h-screen bg-gradient-to-b from-[#f8f6f3] via-[#fafafa] to-white">
         <BreadcrumbBar items={[
           { label: "Home", href: "/" },
           { label: "Shopping Cart" },
         ]} />
 
-        {/* Page Header */}
-        <div className="bg-white border-b border-[#e5e5e5]">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
-            <h1 className="font-[family-name:var(--font-playfair)] text-3xl lg:text-4xl text-[#1a1a1a] mb-2">
-              Shopping Cart
-            </h1>
-            <p className="text-[#666]">
-              {totalItems} {totalItems === 1 ? "item" : "items"} in your cart
-            </p>
+        {/* Page Header with pattern */}
+        <div className="bg-gradient-to-br from-white via-[#fafafa] to-[#f8f6f3] border-b border-[#e5e5e5] relative overflow-hidden">
+          {/* Decorative pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a227] rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#c9a227] rounded-full blur-3xl"></div>
+          </div>
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 relative z-10">
+            <div className="flex items-center gap-4">
+              {/* Shopping Bag Icon */}
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#c9a227] to-[#b8922a] flex items-center justify-center shadow-lg">
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="font-[family-name:var(--font-playfair)] text-3xl lg:text-4xl text-[#1a1a1a] mb-1">
+                  Shopping Cart
+                </h1>
+                <p className="text-[#666]">
+                  {totalItems} {totalItems === 1 ? "item" : "items"} ready for checkout
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -338,10 +353,13 @@ export default function CartPage() {
 
               {/* Order Summary */}
               <div className="lg:col-span-1">
-                <div className="bg-white border border-[#e5e5e5] rounded-lg overflow-hidden sticky top-28">
+                <div className="bg-white border-2 border-[#e5d5a8] rounded-lg overflow-hidden sticky top-28 shadow-lg">
                   {/* Header */}
-                  <div className="bg-[#fafafa] px-6 py-4 border-b border-[#e5e5e5]">
-                    <h2 className="font-[family-name:var(--font-playfair)] text-xl text-[#1a1a1a]">
+                  <div className="bg-gradient-to-r from-[#f3e6c6] to-[#f8f0d6] px-6 py-5 border-b border-[#e5d5a8]">
+                    <h2 className="font-[family-name:var(--font-playfair)] text-xl text-[#1a1a1a] flex items-center gap-2">
+                      <svg className="w-5 h-5 text-[#c9a227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                      </svg>
                       Order Summary
                     </h2>
                   </div>
@@ -457,11 +475,22 @@ export default function CartPage() {
 
         {/* Recently Viewed (when cart is not empty) */}
         {cartItems.length > 0 && (
-          <section className="bg-white border-t border-[#e5e5e5]">
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16">
-              <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-[#1a1a1a] mb-8">
-                You May Also Like
-              </h2>
+          <section className="bg-gradient-to-br from-[#f8f6f3] to-white border-t-2 border-[#e5d5a8] relative overflow-hidden">
+            {/* Decorative elements */}
+            <div className="absolute top-0 left-0 w-32 h-32 bg-[#c9a227] opacity-5 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 right-0 w-40 h-40 bg-[#c9a227] opacity-5 rounded-full blur-3xl"></div>
+
+            <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 relative z-10">
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a227] to-[#b8922a] flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                  </svg>
+                </div>
+                <h2 className="font-[family-name:var(--font-playfair)] text-2xl text-[#1a1a1a]">
+                  You May Also Like
+                </h2>
+              </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {[
                   { id: 4, name: "Tanjore Painting - Lakshmi", price: 12500, category: "Paintings" },

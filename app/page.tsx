@@ -136,18 +136,6 @@ const navigationCategories = [
     items: ["Photo Frames", "Balaji Statue Frames / Idols", "Agarbatti", "Dhoop Sticks", "Perfumes", "Tulsi Mala", "Rudraksha"]
   },
   {
-    id: "tribal",
-    name: "Girijan / Tribal",
-    featured: false,
-    items: ["Araku Coffee", "Herbal Soaps", "Tribal Wellness / Forest Products", "Bamboo Lifestyle Items"]
-  },
-  {
-    id: "premium",
-    name: "Premium Collections",
-    featured: false,
-    items: ["Water Hyacinth Products", "Banana Fibre Products", "Red Sanders Premium Crafts"]
-  },
-  {
     id: "bestsellers",
     name: "Bestsellers",
     featured: false,
@@ -188,22 +176,20 @@ const spiritualProducts = [
   { name: "Rudraksha Beads", price: "Rs.1,200", originalPrice: "Rs.1,500", tag: "Premium", category: "Spiritual", rating: 4.9, reviews: 78 },
 ];
 
-const tribalProducts = [
-  { name: "Araku Valley Coffee", price: "Rs.450", originalPrice: null, tag: "Bestseller", category: "Tribal", rating: 4.9, reviews: 234 },
-  { name: "Herbal Soap Set", price: "Rs.180", originalPrice: null, tag: null, category: "Tribal", rating: 4.7, reviews: 89 },
-  { name: "Tribal Wellness Pack", price: "Rs.350", originalPrice: "Rs.450", tag: "Sale", category: "Tribal", rating: 4.6, reviews: 45 },
-  { name: "Bamboo Storage Basket", price: "Rs.650", originalPrice: null, tag: "New", category: "Tribal", rating: 4.8, reviews: 34 },
-    { name: "Bamboo Storage Basket", price: "Rs.650", originalPrice: null, tag: "New", category: "Tribal", rating: 4.8, reviews: 34 },
-      { name: "Bamboo Storage Basket", price: "Rs.650", originalPrice: null, tag: "New", category: "Tribal", rating: 4.8, reviews: 34 },
+// COMMENTED OUT - No inventory currently available
+// const tribalProducts = [
+//   { name: "Araku Valley Coffee", price: "Rs.450", originalPrice: null, tag: "Bestseller", category: "Tribal", rating: 4.9, reviews: 234 },
+//   { name: "Herbal Soap Set", price: "Rs.180", originalPrice: null, tag: null, category: "Tribal", rating: 4.7, reviews: 89 },
+//   { name: "Tribal Wellness Pack", price: "Rs.350", originalPrice: "Rs.450", tag: "Sale", category: "Tribal", rating: 4.6, reviews: 45 },
+//   { name: "Bamboo Storage Basket", price: "Rs.650", originalPrice: null, tag: "New", category: "Tribal", rating: 4.8, reviews: 34 },
+// ];
 
-
-];
-
-const premiumCollections = [
-  { name: "Water Hyacinth", tagline: "Sustainable Luxury", desc: "Handwoven bags, baskets & home decor", itemCount: 45, color: "from-[#4a7c59] to-[#2d5a3a]" },
-  { name: "Banana Fibre", tagline: "Eco Innovation", desc: "Unique textiles, accessories & art", itemCount: 32, color: "from-[#c9a227] to-[#8b6914]" },
-  { name: "Red Sanders", tagline: "Premium Woodcraft", desc: "Exclusive carved collectibles", itemCount: 28, color: "from-[#8b2500] to-[#5a1800]" },
-];
+// COMMENTED OUT - No inventory currently available
+// const premiumCollections = [
+//   { name: "Water Hyacinth", tagline: "Sustainable Luxury", desc: "Handwoven bags, baskets & home decor", itemCount: 45, color: "from-[#4a7c59] to-[#2d5a3a]" },
+//   { name: "Banana Fibre", tagline: "Eco Innovation", desc: "Unique textiles, accessories & art", itemCount: 32, color: "from-[#c9a227] to-[#8b6914]" },
+//   { name: "Red Sanders", tagline: "Premium Woodcraft", desc: "Exclusive carved collectibles", itemCount: 28, color: "from-[#8b2500] to-[#5a1800]" },
+// ];
 
 // Category Banner Cards Data
 const categoryBanners = [
@@ -258,30 +244,29 @@ const editorialStories = [
 ];
 
 const kondapalliProducts = [
-  { name: "Dashavatar Set", price: "Rs.4,500", originalPrice: "Rs.5,200", tag: "Bestseller", category: "Kondapalli", rating: 4.8, reviews: 124 },
-  { name: "Dancing Doll", price: "Rs.1,200", originalPrice: null, tag: "Popular", category: "Kondapalli", rating: 4.9, reviews: 89 },
-  { name: "Bullock Cart", price: "Rs.2,800", originalPrice: "Rs.3,200", tag: null, category: "Kondapalli", rating: 4.7, reviews: 56 },
-  { name: "Rama Set", price: "Rs.3,500", originalPrice: null, tag: "New", category: "Kondapalli", rating: 4.6, reviews: 34 },
-  { name: "Ambari Elephant", price: "Rs.5,200", originalPrice: "Rs.6,000", tag: "Premium", category: "Kondapalli", rating: 4.9, reviews: 78 },
-  { name: "Fridge Magnets Set", price: "Rs.350", originalPrice: null, tag: null, category: "Kondapalli", rating: 4.5, reviews: 145 },
+  { id: 6, name: "Dashavatar Set", price: "Rs.4,500", originalPrice: "Rs.5,200", tag: "Bestseller", category: "Kondapalli", rating: 4.8, reviews: 124 },
+  { id: 7, name: "Dancing Doll", price: "Rs.1,200", originalPrice: null, tag: "Popular", category: "Kondapalli", rating: 4.9, reviews: 89 },
+  { id: 8, name: "Bullock Cart", price: "Rs.2,800", originalPrice: "Rs.3,200", tag: null, category: "Kondapalli", rating: 4.7, reviews: 56 },
+  { id: 9, name: "Rama Set", price: "Rs.3,500", originalPrice: null, tag: "New", category: "Kondapalli", rating: 4.6, reviews: 34 },
+  { id: 10, name: "Ambari Elephant", price: "Rs.5,200", originalPrice: "Rs.6,000", tag: "Premium", category: "Kondapalli", rating: 4.9, reviews: 78 },
+  { id: 11, name: "Fridge Magnets Set", price: "Rs.350", originalPrice: null, tag: null, category: "Kondapalli", rating: 4.5, reviews: 145 },
 ];
 
 const etikoppakaProducts = [
-  { name: "Keychain Doll", price: "Rs.250", originalPrice: null, tag: "Popular", category: "Etikoppaka", rating: 4.6, reviews: 234 },
-  { name: "Raja-Rani Set", price: "Rs.2,400", originalPrice: "Rs.2,800", tag: "Bestseller", category: "Etikoppaka", rating: 4.8, reviews: 98 },
-  { name: "Kumkum Box", price: "Rs.450", originalPrice: null, tag: null, category: "Etikoppaka", rating: 4.7, reviews: 67 },
-  { name: "Birds Special Series", price: "Rs.1,800", originalPrice: null, tag: "New", category: "Etikoppaka", rating: 4.9, reviews: 45 },
-  { name: "Marriage Couple Set", price: "Rs.3,200", originalPrice: "Rs.3,800", tag: null, category: "Etikoppaka", rating: 4.8, reviews: 89 },
-  { name: "Kalyana Balaji", price: "Rs.4,500", originalPrice: null, tag: "Premium", category: "Etikoppaka", rating: 4.9, reviews: 56 },
+  { id: 12, name: "Keychain Doll", price: "Rs.250", originalPrice: null, tag: "Popular", category: "Etikoppaka", rating: 4.6, reviews: 234 },
+  { id: 13, name: "Raja-Rani Set", price: "Rs.2,400", originalPrice: "Rs.2,800", tag: "Bestseller", category: "Etikoppaka", rating: 4.8, reviews: 98 },
+  { id: 14, name: "Kumkum Box", price: "Rs.450", originalPrice: null, tag: null, category: "Etikoppaka", rating: 4.7, reviews: 67 },
+  { id: 15, name: "Birds Special Series", price: "Rs.1,800", originalPrice: null, tag: "New", category: "Etikoppaka", rating: 4.9, reviews: 45 },
+  { id: 16, name: "Marriage Couple Set", price: "Rs.3,200", originalPrice: "Rs.3,800", tag: null, category: "Etikoppaka", rating: 4.8, reviews: 89 },
+  { id: 17, name: "Kalyana Balaji", price: "Rs.4,500", originalPrice: null, tag: "Premium", category: "Etikoppaka", rating: 4.9, reviews: 56 },
 ];
 
 const featuredProducts = [
-  { name: "Srikalahasti Kalamkari Saree", price: "Rs.15,500", originalPrice: "Rs.18,000", tag: "Bestseller", category: "Textiles", rating: 4.9, reviews: 156 },
-  { name: "Hand-painted Kalamkari Dupatta", price: "Rs.4,990", originalPrice: null, tag: "New", category: "Textiles", rating: 4.7, reviews: 43 },
-  { name: "Pembarthi Brass Diya Set", price: "Rs.6,900", originalPrice: null, tag: null, category: "Metal Crafts", rating: 4.8, reviews: 89 },
-  { name: "Tanjore Painting - Lakshmi", price: "Rs.12,500", originalPrice: "Rs.14,000", tag: "Premium", category: "Paintings", rating: 4.9, reviews: 67 },
-    { name: "Tanjore Painting - Lakshmi", price: "Rs.12,500", originalPrice: "Rs.14,000", tag: "Premium", category: "Paintings", rating: 4.9, reviews: 67 },
-
+  { id: 1, name: "Srikalahasti Kalamkari Saree", price: "Rs.15,500", originalPrice: "Rs.18,000", tag: "Bestseller", category: "Textiles", rating: 4.9, reviews: 156 },
+  { id: 2, name: "Hand-painted Kalamkari Dupatta", price: "Rs.4,990", originalPrice: null, tag: "New", category: "Textiles", rating: 4.7, reviews: 43 },
+  { id: 3, name: "Pembarthi Brass Diya Set", price: "Rs.6,900", originalPrice: null, tag: null, category: "Metal Crafts", rating: 4.8, reviews: 89 },
+  { id: 4, name: "Tanjore Painting - Lakshmi", price: "Rs.12,500", originalPrice: "Rs.14,000", tag: "Premium", category: "Paintings", rating: 4.9, reviews: 67 },
+  { id: 5, name: "Kondapalli Dancing Doll", price: "Rs.2,800", originalPrice: "Rs.3,200", tag: "Bestseller", category: "Wood Crafts", rating: 4.8, reviews: 92 },
 ];
 
 // ============================================
@@ -304,6 +289,7 @@ const StarRating = ({ rating, reviews, dark = false }: { rating: number; reviews
 
 // Unified Product Card Component - Same for ALL sections
 interface Product {
+  id: number;
   name: string;
   price: string;
   originalPrice?: string | null;
@@ -314,12 +300,12 @@ interface Product {
 }
 
 const ProductCard = ({ product, showCategory = false, dark = false }: { product: Product; showCategory?: boolean; dark?: boolean }) => (
-  <motion.a
-    href="#"
-    className="group block"
-    whileHover={{ y: -8 }}
-    transition={{ duration: 0.3 }}
-  >
+  <Link href={`/products/${product.id}`}>
+    <motion.div
+      className="group block cursor-pointer"
+      whileHover={{ y: -8 }}
+      transition={{ duration: 0.3 }}
+    >
     {/* Product Image - Consistent 3:4 aspect ratio */}
     <div className="aspect-[3/4] bg-[#f7f5f0] mb-4 relative overflow-hidden border border-[#e5e0d5] group-hover:border-[#c9a227] transition-all duration-300 group-hover:shadow-xl">
       {/* Placeholder Image Area */}
@@ -378,7 +364,8 @@ const ProductCard = ({ product, showCategory = false, dark = false }: { product:
         )}
       </div>
     </div>
-  </motion.a>
+    </motion.div>
+  </Link>
 );
 
 // Animated Stat Counter Component
@@ -596,7 +583,7 @@ export default function Home() {
 
               {/* Right - Actions */}
               <div className="flex items-center gap-3 sm:gap-5">
-                <button className={`transition-colors duration-300 p-2 ${
+                <Link href="/wishlist" className={`transition-colors duration-300 p-2 ${
                   mobileMenuOpen || isScrolled
                     ? "text-[#1a1a1a] hover:text-[#c9a227]"
                     : "text-white hover:text-[#c9a227]"
@@ -604,8 +591,8 @@ export default function Home() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                   </svg>
-                </button>
-                <button className={`transition-colors duration-300 p-2 relative ${
+                </Link>
+                <Link href="/cart" className={`transition-colors duration-300 p-2 relative ${
                   mobileMenuOpen || isScrolled
                     ? "text-[#1a1a1a] hover:text-[#c9a227]"
                     : "text-white hover:text-[#c9a227]"
@@ -614,7 +601,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                   </svg>
                   <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#c9a227] text-white text-[10px] font-semibold flex items-center justify-center rounded-full">2</span>
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -1017,12 +1004,12 @@ export default function Home() {
               <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-[#c9a227] to-[#f7d794] text-white text-xs tracking-[0.3em] uppercase mb-4 shadow-sm">Handcrafted Heritage</span>
               <h2 className="font-[family-name:var(--font-playfair)] text-5xl md:text-6xl text-[#1a1a1a]">Shop by <span className="italic text-[#c9a227]">Craft</span></h2>
             </div>
-            <a href="#" className="mt-6 lg:mt-0 text-[#1a1a1a] hover:text-[#c9a227] transition-colors flex items-center gap-2 group">
+            <Link href="/products" className="mt-6 lg:mt-0 text-[#1a1a1a] hover:text-[#c9a227] transition-colors flex items-center gap-2 group">
               View All Categories
               <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </a>
+            </Link>
           </motion.div>
 
           {/* Category Grid - Consistent aspect ratios */}
@@ -1090,15 +1077,16 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <motion.a
-              href="#"
-              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              VIEW ALL PRODUCTS
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </motion.a>
+            <Link href="/products">
+              <motion.div
+                className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                VIEW ALL PRODUCTS
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </motion.div>
+            </Link>
           </motion.div>
         </div>
       </AnimatedSection>
@@ -1172,15 +1160,16 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <motion.a
-              href="#"
-              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              VIEW ALL SPIRITUAL
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </motion.a>
+            <Link href="/products?category=spiritual">
+              <motion.div
+                className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                VIEW ALL SPIRITUAL
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </motion.div>
+            </Link>
           </motion.div>
         </div>
       </AnimatedSection>
@@ -1251,7 +1240,7 @@ export default function Home() {
       </AnimatedSection>
 
       {/* ========== BESTSELLING TOYS ========== */}
-      <AnimatedSection className="py-24 px-6 bg-white">
+      {/* <AnimatedSection className="py-24 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             className="text-center mb-12"
@@ -1295,21 +1284,24 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <motion.a
-              href="#"
-              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              VIEW ALL {activeTab === "kondapalli" ? "KONDAPALLI" : "ETIKOPPAKA"}
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </motion.a>
+            <Link href={`/products?category=${activeTab}`}>
+              <motion.div
+                className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                VIEW ALL {activeTab === "kondapalli" ? "KONDAPALLI" : "ETIKOPPAKA"}
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </motion.div>
+            </Link>
           </motion.div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection> */}
 
       {/* ========== TRIBAL PRODUCTS ========== */}
-      <AnimatedSection className="py-24 px-6 bg-[#2d2a26] relative overflow-hidden">
+      {/* COMMENTED OUT - Lepakshi doesn't have inventory for tribal products currently */}
+      {/* Will be re-enabled when inventory is available */}
+      {/* <AnimatedSection className="py-24 px-6 bg-[#2d2a26] relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <pattern id="tribal-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -1332,21 +1324,24 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <motion.a
-              href="#"
-              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#7cb69d] text-[#7cb69d] text-sm sm:text-base font-medium tracking-wider hover:bg-[#7cb69d] hover:text-white transition-all whitespace-nowrap"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              VIEW ALL TRIBAL
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </motion.a>
+            <Link href="/products?category=tribal">
+              <motion.div
+                className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#7cb69d] text-[#7cb69d] text-sm sm:text-base font-medium tracking-wider hover:bg-[#7cb69d] hover:text-white transition-all whitespace-nowrap cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                VIEW ALL TRIBAL
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </motion.div>
+            </Link>
           </motion.div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection> */}
 
       {/* ========== PREMIUM COLLECTIONS ========== */}
-      <AnimatedSection className="py-24 px-6 bg-white">
+      {/* COMMENTED OUT - Lepakshi doesn't have inventory for premium collections currently */}
+      {/* Will be re-enabled when inventory is available */}
+      {/* <AnimatedSection className="py-24 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             className="text-center mb-16"
@@ -1408,18 +1403,19 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <motion.a
-              href="#"
-              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              VIEW ALL COLLECTIONS
-              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-            </motion.a>
+            <Link href="/products?category=premium">
+              <motion.div
+                className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                VIEW ALL COLLECTIONS
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </motion.div>
+            </Link>
           </motion.div>
         </div>
-      </AnimatedSection>
+      </AnimatedSection> */}
 
       {/* ========== PROMISE SECTION ========== */}
       <AnimatedSection className="relative py-24 bg-[#f7f5f0] overflow-hidden">
@@ -1694,7 +1690,7 @@ export default function Home() {
             </div>
             {[
               { title: "CRAFTS", links: ["Kalamkari Textiles", "Kondapalli Toys", "Etikoppaka Lacquer", "Pembarthi Brass", "Bidriware"] },
-              { title: "COLLECTIONS", links: ["Spiritual & Pooja", "Tribal Products", "Natural Fibres", "New Arrivals", "Bestsellers"] },
+              { title: "COLLECTIONS", links: ["Spiritual & Pooja", "Natural Fibres", "New Arrivals", "Bestsellers"] },
               { title: "ABOUT US", links: ["Our Heritage", "Meet the Artisans", "GI Certifications", "Visit Stores", "Careers"] },
               { title: "SUPPORT", links: ["Contact Us", "FAQs", "Shipping Info", "Returns Policy", "Track Order"] },
             ].map((col) => (

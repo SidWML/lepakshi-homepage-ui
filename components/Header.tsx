@@ -1,12 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 
 // ============================================
 // NAVIGATION DATA
 // ============================================
+
+// Navigation item interface with optional location
+interface NavItem {
+  name: string;
+  location?: string;
+}
 
 const navigationCategories = [
   {
@@ -17,42 +23,76 @@ const navigationCategories = [
       {
         id: "textiles",
         name: "Textile & Weaves",
-        items: ["Kalamkari Textile Prints", "Crochet Lace", "Applique / Embroidery Work"]
+        items: [
+          { name: "Kalamkari Textile Prints", location: "Machilipatnam, Pedana" },
+          { name: "Crochet Lace", location: "Narasapur" },
+          { name: "Applique / Embroidery Work", location: "Madanapalli" }
+        ]
       },
       {
         id: "metal",
         name: "Metal Crafts",
-        items: ["Brassware", "Bronze Castings", "Brassware (Onipenta / Budithi styles)"]
+        items: [
+          { name: "Brassware", location: "Budithi" },
+          { name: "Bronze Castings", location: "Tirupati" },
+          { name: "Brassware (Onipenta / Budithi styles)", location: "Onipenta" }
+        ]
       },
       {
         id: "paintings",
         name: "Paintings",
-        items: ["Pen Kalamkari & Kalamkari Block Prints", "Savara / Adivasi Tribal Paintings", "Tanjore Paintings", "Lampshades (Hand-painted)", "Leather Puppetry (Tholu Bommalata)"]
+        items: [
+          { name: "Pen Kalamkari & Kalamkari Block Prints", location: "Srikalahasti, Banaganapalli" },
+          { name: "Savara / Adivasi Tribal Paintings", location: "Seethampeta" },
+          { name: "Tanjore Paintings" },
+          { name: "Lampshades (Hand-painted)" },
+          { name: "Leather Puppetry (Tholu Bommalata)", location: "Nimmalakunta, Dharmavaram" }
+        ]
       },
       {
         id: "natural-fibres",
         name: "Natural Fibres",
-        items: ["Palm Leaf Craft", "Walking Sticks (Rajahmundry)", "Bamboo Craft"]
+        items: [
+          { name: "Palm Leaf Craft", location: "Tuni, Rampachodavaram, Gokavaram, Devipatnam" },
+          { name: "Walking Sticks", location: "Rajahmundry" },
+          { name: "Bamboo Craft", location: "Rampachodavaram" }
+        ]
       },
       {
         id: "wood",
         name: "Wood Crafts & Toys",
-        items: ["Kondapalli Painted Toys", "Etikoppaka Lacquerware Toys", "White Wood Birds", "Wooden Statues", "Wall Panels", "Bobbili Veena", "Udayagiri Wooden Cutlery", "Red Sander Crafts"]
+        items: [
+          { name: "Kondapalli Painted Toys", location: "Kondapalli" },
+          { name: "Etikoppaka Lacquerware Toys", location: "Etikoppaka" },
+          { name: "White Wood Birds", location: "Rajahmundry" },
+          { name: "Wooden Statues", location: "Tirupati / Settigunta" },
+          { name: "Wall Panels", location: "Tirupati" },
+          { name: "Bobbili Veena", location: "Bobbili" },
+          { name: "Udayagiri Wooden Cutlery", location: "Udayagiri" },
+          { name: "Red Sander Crafts", location: "Lakshmigari palli" }
+        ]
       },
       {
         id: "mineral",
         name: "Natural Mineral Crafts",
-        items: ["Stone Carvings – Durgi", "Pottery / Terracotta"]
+        items: [
+          { name: "Stone Carvings", location: "Durgi" },
+          { name: "Pottery / Terracotta", location: "Madnapalle, Palamaneru" }
+        ]
       },
       {
         id: "jewelry",
         name: "Jewelry",
-        items: ["Imitation Jewellery"]
+        items: [
+          { name: "Imitation Jewellery", location: "Machilipatnam" }
+        ]
       },
       {
         id: "carpets",
         name: "Carpets",
-        items: ["Hand-Knotted Carpets (Eluru)"]
+        items: [
+          { name: "Hand-Knotted Carpets", location: "Eluru" }
+        ]
       }
     ]
   },
@@ -63,18 +103,6 @@ const navigationCategories = [
     items: ["Photo Frames", "Balaji Statue Frames / Idols", "Agarbatti", "Dhoop Sticks", "Perfumes", "Tulsi Mala", "Rudraksha"]
   },
   {
-    id: "tribal",
-    name: "Girijan / Tribal",
-    featured: false,
-    items: ["Araku Coffee", "Herbal Soaps", "Tribal Wellness / Forest Products", "Bamboo Lifestyle Items"]
-  },
-  {
-    id: "premium",
-    name: "Premium Collections",
-    featured: false,
-    items: ["Water Hyacinth Products", "Banana Fibre Products", "Red Sanders Premium Crafts"]
-  },
-  {
     id: "bestsellers",
     name: "Bestsellers",
     featured: false,
@@ -82,12 +110,27 @@ const navigationCategories = [
       {
         id: "kondapalli-toys",
         name: "Kondapalli Toys",
-        items: ["Dashavatar Set", "Dancing Doll", "Bullock Cart", "Rama Set", "Ambari Elephant", "Fridge Magnets"]
+        items: [
+          { name: "Dashavatar Set", location: "Kondapalli" },
+          { name: "Dancing Doll", location: "Kondapalli" },
+          { name: "Bullock Cart", location: "Kondapalli" },
+          { name: "Rama Set", location: "Kondapalli" },
+          { name: "Ambari Elephant", location: "Kondapalli" },
+          { name: "Fridge Magnets", location: "Kondapalli" }
+        ]
       },
       {
         id: "etikoppaka-toys",
         name: "Etikoppaka Toys",
-        items: ["Keychain Doll Model", "Raja-Rani Set", "Kumkum Box", "Birds (Special Series)", "Marriage Couple Set", "Kalyana Balaji", "Tirupati Wood Carving"]
+        items: [
+          { name: "Keychain Doll Model", location: "Etikoppaka" },
+          { name: "Raja-Rani Set", location: "Etikoppaka" },
+          { name: "Kumkum Box", location: "Etikoppaka" },
+          { name: "Birds (Special Series)", location: "Etikoppaka" },
+          { name: "Marriage Couple Set", location: "Etikoppaka" },
+          { name: "Kalyana Balaji", location: "Etikoppaka" },
+          { name: "Tirupati Wood Carving", location: "Tirupati" }
+        ]
       }
     ]
   }
@@ -125,38 +168,15 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
   const currentCategory = navigationCategories.find(c => c.id === activeCategory);
   const currentSubcategory = currentCategory?.subcategories?.find(s => s.id === activeSubcategory);
 
-  // Determine header background based on variant and state
-  const getHeaderBg = () => {
-    if (mobileMenuOpen || isScrolled) {
-      return "bg-[#f3e6c6] border-b border-[#e5e5e5] shadow-sm";
-    }
-    if (variant === "solid") {
-      return "bg-[#f3e6c6] border-b border-[#e5e5e5] shadow-sm";
-    }
-    return "bg-transparent border-b border-transparent";
-  };
-
-  // Determine text color based on variant and state
-  const getTextColor = () => {
-    if (mobileMenuOpen || isScrolled || variant === "solid") {
-      return "text-[#1a1a1a] hover:text-[#c9a227]";
-    }
-    return "text-white hover:text-[#c9a227]";
-  };
-
-  // Determine logo filter based on variant and state
-  const getLogoFilter = () => {
-    if (mobileMenuOpen || isScrolled || variant === "solid") {
-      return "";
-    }
-    return "brightness-0 invert";
-  };
-
   return (
     <>
       {/* Header */}
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${getHeaderBg()}`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          variant === "solid" || mobileMenuOpen || isScrolled
+            ? "bg-[#f3e6c6]  shadow-sm"
+            : "bg-transparent border-transparent"
+        }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -168,7 +188,11 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
-                className={`transition-colors duration-300 p-2 flex items-center gap-2 ${getTextColor()}`}
+                className={`transition-colors duration-300 p-2 flex items-center gap-2 ${
+                  variant === "solid" || mobileMenuOpen || isScrolled
+                    ? "text-[#1a1a1a] hover:text-[#c9a227]"
+                    : "text-white hover:text-[#c9a227]"
+                }`}
               >
                 <div className="relative w-6 h-6">
                   <motion.span
@@ -191,7 +215,11 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                   {mobileMenuOpen ? "CLOSE" : "MENU"}
                 </span>
               </button>
-              <button className={`transition-colors duration-300 p-2 ${getTextColor()}`}>
+              <button className={`transition-colors duration-300 p-2 ${
+                variant === "solid" || mobileMenuOpen || isScrolled
+                  ? "text-[#1a1a1a] hover:text-[#c9a227]"
+                  : "text-white hover:text-[#c9a227]"
+              }`}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
@@ -203,23 +231,33 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
               <img
                 src="/logo.png"
                 alt="Lepakshi"
-                className={`h-12 transition-all duration-300 ${getLogoFilter()}`}
+                className={`h-12 transition-all duration-300 ${
+                  variant === "solid" || mobileMenuOpen || isScrolled ? "" : "brightness-0 invert"
+                }`}
               />
             </Link>
 
             {/* Right - Actions */}
             <div className="flex items-center gap-3 sm:gap-5">
-              <button className={`transition-colors duration-300 p-2 ${getTextColor()}`}>
+              <Link href="/wishlist" className={`transition-colors duration-300 p-2 ${
+                variant === "solid" || mobileMenuOpen || isScrolled
+                  ? "text-[#1a1a1a] hover:text-[#c9a227]"
+                  : "text-white hover:text-[#c9a227]"
+              }`}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                 </svg>
-              </button>
-              <button className={`transition-colors duration-300 p-2 relative ${getTextColor()}`}>
+              </Link>
+              <Link href="/cart" className={`transition-colors duration-300 p-2 relative ${
+                variant === "solid" || mobileMenuOpen || isScrolled
+                  ? "text-[#1a1a1a] hover:text-[#c9a227]"
+                  : "text-white hover:text-[#c9a227]"
+              }`}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                 </svg>
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#c9a227] text-white text-[10px] font-semibold flex items-center justify-center rounded-full">2</span>
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -239,13 +277,13 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
               className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
             />
 
-            {/* Sliding Drawer - Beige Theme */}
+            {/* Sliding Drawer - White Theme */}
             <motion.div
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "tween", duration: 0.4, ease: "easeOut" }}
-              className="fixed top-20 left-0 bottom-0 bg-[#f3e6c6] z-40 overflow-hidden flex shadow-2xl"
+              className="fixed top-20 left-0 bottom-0 bg-white z-40 overflow-hidden flex shadow-2xl"
             >
               {/* Golden accent line */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#c9a227] via-[#f7d794] to-[#c9a227]" />
@@ -335,7 +373,7 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: 50, opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className={`${activeSubcategory && currentCategory.subcategories ? 'hidden sm:block' : 'block'} w-full sm:w-[240px] lg:w-[260px] bg-[#f3e6c6] border-r border-[#e5e5e5] flex-shrink-0`}
+                    className={`${activeSubcategory && currentCategory.subcategories ? 'hidden sm:block' : 'block'} w-full sm:w-[240px] lg:w-[260px] bg-white border-r border-[#e5e5e5] flex-shrink-0`}
                   >
                     <div className="h-full overflow-y-auto py-6">
                       {/* Back button (mobile) */}
@@ -400,22 +438,38 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                         </div>
                       ) : (
                         <div className="px-6 space-y-2">
-                          {currentCategory.items?.map((item, idx) => (
-                            <motion.div
-                              key={item}
-                              initial={{ y: 10, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{ duration: 0.2, delay: idx * 0.03 }}
-                            >
-                              <Link
-                                href={`/products?item=${encodeURIComponent(item)}`}
-                                onClick={closeMenu}
-                                className="block py-2 text-sm text-[#3d3428] hover:text-[#c9a227] transition-colors"
+                          {currentCategory.items?.map((item, idx) => {
+                            const itemName = typeof item === 'string' ? item : (item as any).name;
+                            const itemLocation = typeof item === 'object' && (item as any).location ? (item as any).location : null;
+
+                            return (
+                              <motion.div
+                                key={itemName}
+                                initial={{ y: 10, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ duration: 0.2, delay: idx * 0.03 }}
                               >
-                                {item}
-                              </Link>
-                            </motion.div>
-                          ))}
+                                <Link
+                                  href={`/products?item=${encodeURIComponent(itemName)}`}
+                                  onClick={closeMenu}
+                                  className="block py-2 text-sm text-[#3d3428] hover:text-[#c9a227] transition-colors"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span>{itemName}</span>
+                                    {itemLocation && (
+                                      <span className="text-xs text-[#999] flex items-center gap-1">
+                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        {itemLocation}
+                                      </span>
+                                    )}
+                                  </div>
+                                </Link>
+                              </motion.div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>
@@ -432,7 +486,7 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: 50, opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="w-full sm:w-[280px] lg:w-[320px] bg-[#f3e6c6] flex-shrink-0"
+                    className="w-full sm:w-[280px] lg:w-[320px] bg-white flex-shrink-0"
                   >
                     <div className="h-full overflow-y-auto py-6">
                       {/* Back button (mobile) */}
@@ -463,28 +517,44 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
 
                       {/* Items List */}
                       <div className="px-6 space-y-1">
-                        {currentSubcategory.items.map((item, idx) => (
-                          <motion.div
-                            key={item}
-                            initial={{ y: 15, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 0.25, delay: idx * 0.04 }}
-                          >
-                            <Link
-                              href={`/products?item=${encodeURIComponent(item)}`}
-                              onClick={closeMenu}
-                              className="group flex items-center gap-3 py-3 border-b border-[#e0e0e0] last:border-0"
+                        {currentSubcategory.items.map((item, idx) => {
+                          const itemName = typeof item === 'string' ? item : item.name;
+                          const itemLocation = typeof item === 'object' && item.location ? item.location : null;
+
+                          return (
+                            <motion.div
+                              key={itemName}
+                              initial={{ y: 15, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ duration: 0.25, delay: idx * 0.04 }}
                             >
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#c9a227]/60 group-hover:bg-[#c9a227] transition-colors" />
-                              <span className="text-sm text-[#3d3428] group-hover:text-[#c9a227] transition-colors">
-                                {item}
-                              </span>
-                              <svg className="w-3 h-3 ml-auto text-[#999] group-hover:text-[#c9a227] opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                              </svg>
-                            </Link>
-                          </motion.div>
-                        ))}
+                              <Link
+                                href={`/products?item=${encodeURIComponent(itemName)}`}
+                                onClick={closeMenu}
+                                className="group flex items-center gap-3 py-3 border-b border-[#e0e0e0] last:border-0"
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#c9a227]/60 group-hover:bg-[#c9a227] transition-colors flex-shrink-0" />
+                                <div className="flex-1 min-w-0">
+                                  <span className="text-sm text-[#3d3428] group-hover:text-[#c9a227] transition-colors block">
+                                    {itemName}
+                                  </span>
+                                  {itemLocation && (
+                                    <span className="text-xs text-[#999] flex items-center gap-1 mt-0.5">
+                                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                      </svg>
+                                      {itemLocation}
+                                    </span>
+                                  )}
+                                </div>
+                                <svg className="w-3 h-3 text-[#999] group-hover:text-[#c9a227] opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                </svg>
+                              </Link>
+                            </motion.div>
+                          );
+                        })}
                       </div>
                     </div>
                   </motion.div>

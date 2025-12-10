@@ -106,7 +106,7 @@ const WishlistItem = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -100 }}
       transition={{ duration: 0.3 }}
-      className="bg-white border border-[#e5e5e5] rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+      className="bg-white border-2 border-[#e5d5a8] rounded-lg overflow-hidden hover:shadow-xl hover:border-[#c9a227] transition-all group"
     >
       <div className="flex flex-col sm:flex-row">
         {/* Product Image */}
@@ -218,23 +218,36 @@ export default function WishlistPage() {
     <>
       <Header variant="solid" />
 
-      <main className="pt-20 bg-[#fafafa] min-h-screen">
+      <main className="pt-20 min-h-screen bg-gradient-to-b from-[#f8f6f3] via-[#fafafa] to-white">
         <BreadcrumbBar items={[
           { label: "Home", href: "/" },
           { label: "Wishlist" },
         ]} />
 
-        {/* Page Header */}
-        <div className="bg-white border-b border-[#e5e5e5]">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+        {/* Page Header with pattern */}
+        <div className="bg-gradient-to-br from-white via-[#fafafa] to-[#f8f6f3] border-b border-[#e5e5e5] relative overflow-hidden">
+          {/* Decorative pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a227] rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#c9a227] rounded-full blur-3xl"></div>
+          </div>
+          <div className="max-w-7xl mx-auto px-6 lg:px-12 py-10 relative z-10">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="font-[family-name:var(--font-playfair)] text-3xl lg:text-4xl text-[#1a1a1a] mb-2">
-                  My Wishlist
-                </h1>
-                <p className="text-[#666]">
-                  {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"} saved
-                </p>
+              <div className="flex items-center gap-4">
+                {/* Heart Icon */}
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#c9a227] to-[#b8922a] flex items-center justify-center shadow-lg">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                  </svg>
+                </div>
+                <div>
+                  <h1 className="font-[family-name:var(--font-playfair)] text-3xl lg:text-4xl text-[#1a1a1a] mb-1">
+                    My Wishlist
+                  </h1>
+                  <p className="text-[#666]">
+                    {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"} saved for later
+                  </p>
+                </div>
               </div>
               {wishlistItems.length > 0 && (
                 <Button variant="ghost" onClick={handleClearAll} className="text-[#666] hover:text-[#d32f2f]">
