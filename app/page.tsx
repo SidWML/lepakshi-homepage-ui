@@ -167,13 +167,13 @@ const mainCategories = [
 
 // All products follow the same structure for consistent card rendering
 const spiritualProducts = [
-  { name: "Balaji Statue Frame", price: "Rs.2,500", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 45 },
-  { name: "Divine Photo Frames", price: "Rs.850", originalPrice: "Rs.1,000", tag: "Sale", category: "Spiritual", rating: 4.6, reviews: 32 },
-  { name: "Premium Agarbatti Set", price: "Rs.150", originalPrice: null, tag: null, category: "Spiritual", rating: 4.9, reviews: 156 },
-  { name: "Dhoop Sticks Set", price: "Rs.120", originalPrice: null, tag: "Popular", category: "Spiritual", rating: 4.7, reviews: 89 },
-  { name: "Temple Perfumes", price: "Rs.450", originalPrice: null, tag: null, category: "Spiritual", rating: 4.5, reviews: 23 },
-  { name: "Tulsi Mala", price: "Rs.350", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 67 },
-  { name: "Rudraksha Beads", price: "Rs.1,200", originalPrice: "Rs.1,500", tag: "Premium", category: "Spiritual", rating: 4.9, reviews: 78 },
+  { id: 18, name: "Balaji Statue Frame", price: "Rs.2,500", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 45 },
+  { id: 19, name: "Divine Photo Frames", price: "Rs.850", originalPrice: "Rs.1,000", tag: "Sale", category: "Spiritual", rating: 4.6, reviews: 32 },
+  { id: 20, name: "Premium Agarbatti Set", price: "Rs.150", originalPrice: null, tag: null, category: "Spiritual", rating: 4.9, reviews: 156 },
+  { id: 21, name: "Dhoop Sticks Set", price: "Rs.120", originalPrice: null, tag: "Popular", category: "Spiritual", rating: 4.7, reviews: 89 },
+  { id: 22, name: "Temple Perfumes", price: "Rs.450", originalPrice: null, tag: null, category: "Spiritual", rating: 4.5, reviews: 23 },
+  { id: 23, name: "Tulsi Mala", price: "Rs.350", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 67 },
+  { id: 24, name: "Rudraksha Beads", price: "Rs.1,200", originalPrice: "Rs.1,500", tag: "Premium", category: "Spiritual", rating: 4.9, reviews: 78 },
 ];
 
 // COMMENTED OUT - No inventory currently available
