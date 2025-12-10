@@ -14,7 +14,7 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
   return (
-    <nav className={`flex items-center gap-2 text-sm text-[#666] ${className}`}>
+    <nav className={`flex items-center gap-2 text-sm ${className || 'text-[#666]'}`}>
       {items.map((item, index) => (
         <span key={index} className="flex items-center gap-2">
           {index > 0 && <span>/</span>}
@@ -23,7 +23,7 @@ export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
               {item.label}
             </Link>
           ) : (
-            <span className="text-[#1a1a1a]">{item.label}</span>
+            <span className="font-medium">{item.label}</span>
           )}
         </span>
       ))}

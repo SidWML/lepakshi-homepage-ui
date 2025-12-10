@@ -557,8 +557,7 @@ export default function ProductsPage() {
                 { label: "Home", href: "/" },
                 { label: "All Products" },
               ]}
-              variant="light"
-              className="mb-4"
+              className="mb-4 text-white/80"
             />
 
             <motion.h1
