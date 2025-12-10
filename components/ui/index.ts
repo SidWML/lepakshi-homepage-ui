@@ -15,7 +15,6 @@ export { QuantitySelector } from "./QuantitySelector";
 
 // Product Components
 export { ProductCard, ProductCardGrid, ProductCardList } from "./ProductCard";
-export type { Product } from "./ProductCard";
 
 // Navigation Components
 export { Breadcrumb, BreadcrumbBar } from "./Breadcrumb";

@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "Bash(ren:*)",
+      "Bash(ren \"banner-kalamkari.jpg (Rama Pattabhishekam).png\" \"banner-kalamkari.png\")",
+      "Bash(powershell -Command \"cd ''c:\\Users\\sajid\\Videos\\lepakshi-ui\\lepakshi-ui\\public\\banner''; Rename-Item ''banner-brass.jpg (Ram Darbar).png'' ''banner-brass.png''; Rename-Item ''banner-etikoppaka.jpg (Bridal Set).png'' ''banner-etikoppaka.png''; Rename-Item ''banner-kalamkari.jpg (Rama Pattabhishekam).png'' ''banner-kalamkari.png''; Rename-Item ''banner-kondapalli.jpg (Dashavatar Set).png'' ''banner-kondapalli.png''; Rename-Item ''banner-spiritual.jpg (Agarbatti collection).png'' ''banner-spiritual.png''\")",
+      "Bash(powershell -Command \"cd ''c:\\Users\\sajid\\Videos\\lepakshi-ui\\lepakshi-ui\\public\\store''; Rename-Item ''store-hyderabad.jpg.png'' ''store-hyderabad.png''; Rename-Item ''store-vijayawada.jpg.png'' ''store-vijayawada.png''\")",
+      "Bash(powershell -Command:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(npm run build:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

@@ -69,10 +69,10 @@ interface PriceCompactProps {
 
 export function PriceCompact({ price, originalPrice, className = "" }: PriceCompactProps) {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      <span className="font-semibold text-[#1a1a1a]">Rs.{price.toLocaleString()}</span>
+    <div className={`flex items-center gap-1.5 sm:gap-2 ${className}`}>
+      <span className="font-semibold text-sm sm:text-base text-[#1a1a1a]">Rs.{price.toLocaleString()}</span>
       {originalPrice && originalPrice > price && (
-        <span className="text-sm text-[#999] line-through">
+        <span className="text-xs sm:text-sm text-[#999] line-through">
           Rs.{originalPrice.toLocaleString()}
         </span>
       )}

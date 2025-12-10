@@ -14,9 +14,9 @@ interface BreadcrumbProps {
 
 export function Breadcrumb({ items, className = "" }: BreadcrumbProps) {
   return (
-    <nav className={`flex items-center gap-2 text-sm ${className || 'text-[#666]'}`}>
+    <nav className={`flex items-center gap-2 text-sm flex-wrap ${className || 'text-[#666]'}`}>
       {items.map((item, index) => (
-        <span key={index} className="flex items-center gap-2">
+        <span key={index} className="flex items-center gap-2 whitespace-nowrap">
           {index > 0 && <span>/</span>}
           {item.href ? (
             <Link href={item.href} className="hover:text-[#c9a227] transition-colors">

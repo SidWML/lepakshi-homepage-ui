@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 
 // ============================================
 // NAVIGATION DATA
@@ -13,6 +15,54 @@ interface NavItem {
   name: string;
   location?: string;
 }
+
+// Helper function to get category URL from navigation ID
+// URL structure: /parent/category (e.g., /handicrafts/textiles)
+const getCategoryUrlFromId = (categoryId: string): string => {
+  // Map navigation category IDs to the new hierarchical URL structure
+  const categoryUrlMap: Record<string, string> = {
+    // Main handicraft categories - now under /handicrafts/
+    "textiles": "/handicrafts/textiles",
+    "metal": "/handicrafts/metal",
+    "paintings": "/handicrafts/paintings",
+    "natural-fibres": "/handicrafts/natural-fibres",
+    "wood": "/handicrafts/wood",
+    "mineral": "/handicrafts/mineral",
+    "carpets": "/handicrafts/carpets",
+    "jewelry": "/handicrafts/wood", // Fallback
+    // Spiritual category - under /spiritual/
+    "spiritual": "/spiritual/spiritual",
+    // Bestseller subcategories - link to wood subcategories
+    "kondapalli-toys": "/handicrafts/wood/kondapalli",
+    "etikoppaka-toys": "/handicrafts/wood/etikoppaka",
+    // Parent groupings
+    "handicrafts": "/handicrafts",
+    "bestsellers": "/handicrafts/wood",
+  };
+
+  return categoryUrlMap[categoryId] || "/products";
+};
+
+// Helper to get subcategory URL within a category
+const getSubcategoryUrl = (subcategoryId: string, parentId: string): string => {
+  // For bestsellers, map to the actual wood subcategory pages
+  if (parentId === "bestsellers") {
+    if (subcategoryId === "kondapalli-toys") return "/handicrafts/wood/kondapalli";
+    if (subcategoryId === "etikoppaka-toys") return "/handicrafts/wood/etikoppaka";
+  }
+
+  // For handicrafts subcategories (textiles, metal, wood, etc.)
+  if (parentId === "handicrafts") {
+    return `/handicrafts/${subcategoryId}`;
+  }
+
+  // For spiritual - all items link to the spiritual category
+  if (parentId === "spiritual") {
+    return "/spiritual/spiritual";
+  }
+
+  return getCategoryUrlFromId(subcategoryId);
+};
 
 const navigationCategories = [
   {
@@ -150,6 +200,9 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
 
+  const { itemCount: cartCount } = useCart();
+  const { itemCount: wishlistCount } = useWishlist();
+
   const { scrollY } = useScroll();
 
   // Track scroll for header background change
@@ -239,7 +292,7 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
 
             {/* Right - Actions */}
             <div className="flex items-center gap-3 sm:gap-5">
-              <Link href="/wishlist" className={`transition-colors duration-300 p-2 ${
+              <Link href="/wishlist" className={`transition-colors duration-300 p-2 relative ${
                 variant === "solid" || mobileMenuOpen || isScrolled
                   ? "text-[#1a1a1a] hover:text-[#c9a227]"
                   : "text-white hover:text-[#c9a227]"
@@ -247,6 +300,11 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                 </svg>
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-semibold flex items-center justify-center rounded-full">
+                    {wishlistCount > 9 ? "9+" : wishlistCount}
+                  </span>
+                )}
               </Link>
               <Link href="/cart" className={`transition-colors duration-300 p-2 relative ${
                 variant === "solid" || mobileMenuOpen || isScrolled
@@ -256,7 +314,11 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                 </svg>
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#c9a227] text-white text-[10px] font-semibold flex items-center justify-center rounded-full">2</span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#c9a227] text-white text-[10px] font-semibold flex items-center justify-center rounded-full">
+                    {cartCount > 9 ? "9+" : cartCount}
+                  </span>
+                )}
               </Link>
             </div>
           </div>
@@ -391,7 +453,7 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                       <div className="px-6 mb-6">
                         <p className="text-[#c9a227] text-[10px] tracking-[0.3em] uppercase mb-1">{currentCategory.name}</p>
                         <Link
-                          href={`/products?category=${currentCategory.id}`}
+                          href={getCategoryUrlFromId(currentCategory.id)}
                           onClick={closeMenu}
                           className="text-[#666] text-xs hover:text-[#c9a227] flex items-center gap-1 mt-1"
                         >
@@ -450,7 +512,7 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                                 transition={{ duration: 0.2, delay: idx * 0.03 }}
                               >
                                 <Link
-                                  href={`/products?item=${encodeURIComponent(itemName)}`}
+                                  href={getCategoryUrlFromId(currentCategory.id)}
                                   onClick={closeMenu}
                                   className="block py-2 text-sm text-[#3d3428] hover:text-[#c9a227] transition-colors"
                                 >
@@ -504,7 +566,7 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                       <div className="px-6 mb-6">
                         <p className="text-[#c9a227] text-[10px] tracking-[0.3em] uppercase mb-1">{currentSubcategory.name}</p>
                         <Link
-                          href={`/products?category=${currentSubcategory.id}`}
+                          href={getSubcategoryUrl(currentSubcategory.id, activeCategory || "")}
                           onClick={closeMenu}
                           className="text-[#666] text-xs hover:text-[#c9a227] flex items-center gap-1 mt-1"
                         >
@@ -529,7 +591,7 @@ export default function Header({ variant = "transparent" }: HeaderProps) {
                               transition={{ duration: 0.25, delay: idx * 0.04 }}
                             >
                               <Link
-                                href={`/products?item=${encodeURIComponent(itemName)}`}
+                                href={getSubcategoryUrl(currentSubcategory.id, activeCategory || "")}
                                 onClick={closeMenu}
                                 className="group flex items-center gap-3 py-3 border-b border-[#e0e0e0] last:border-0"
                               >

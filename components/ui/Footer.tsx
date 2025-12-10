@@ -68,10 +68,10 @@ interface FooterProps {
 
 export function Footer({ className = "" }: FooterProps) {
   return (
-    <footer className={`bg-[#1a1a1a] text-white pt-16 pb-8 px-6 ${className}`}>
+    <footer className={`bg-[#1a1a1a] text-white pt-10 sm:pt-16 pb-8 px-4 sm:px-6 ${className}`}>
       <div className="max-w-7xl mx-auto">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {/* Logo & Description */}
           <div className="col-span-2">
             <Link href="/">
@@ -124,18 +124,18 @@ export function Footer({ className = "" }: FooterProps) {
 
         {/* Newsletter */}
         <div className="py-8 border-t border-b border-white/10 mb-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-              <h4 className="text-lg font-medium mb-1">Subscribe to our newsletter</h4>
-              <p className="text-white/60 text-sm">Get updates on new arrivals and special offers</p>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6">
+            <div className="mb-2 md:mb-0">
+              <h4 className="text-base sm:text-lg font-medium mb-1">Subscribe to our newsletter</h4>
+              <p className="text-white/60 text-xs sm:text-sm">Get updates on new arrivals and special offers</p>
             </div>
-            <div className="flex gap-2 w-full md:w-auto">
+            <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 md:w-64 px-4 py-3 bg-white/10 border border-white/20 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-[#c9a227] transition-colors"
+                className="w-full sm:flex-1 md:w-64 px-4 py-3 bg-white/10 border border-white/20 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-[#c9a227] transition-colors rounded-none"
               />
-              <button className="px-6 py-3 bg-[#c9a227] text-white font-medium text-sm tracking-wider hover:bg-[#b8922a] transition-colors">
+              <button className="w-full sm:w-auto px-6 py-3 bg-[#c9a227] text-white font-medium text-sm tracking-wider hover:bg-[#b8922a] transition-colors whitespace-nowrap">
                 SUBSCRIBE
               </button>
             </div>

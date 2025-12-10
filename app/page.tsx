@@ -2,9 +2,14 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { motion, useScroll, useTransform, useInView, useSpring, useMotionValue, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import Header from "@/components/Header";
+import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { type Product as CentralProduct } from "@/lib/data/products";
 
 // ============================================
 // ANIMATION VARIANTS
@@ -155,25 +160,25 @@ const navigationCategories = [
 ];
 
 const mainCategories = [
-  { id: "textiles", name: "Textile & Weaves", tagline: "Heritage Fabrics", color: "from-[#d4a574] to-[#a67c52]", productCount: 156, subcategories: ["Kalamkari Textile Prints", "Crochet Lace", "Applique / Embroidery Work"] },
-  { id: "metal", name: "Metal Crafts", tagline: "Timeless Metalwork", color: "from-[#b8860b] to-[#8b6914]", productCount: 89, subcategories: ["Brassware", "Bronze Castings", "Onipenta / Budithi Styles"] },
-  { id: "paintings", name: "Paintings", tagline: "Artistic Heritage", color: "from-[#c97b7b] to-[#8f4a4a]", productCount: 124, subcategories: ["Pen Kalamkari", "Savara / Adivasi Tribal", "Tanjore Paintings", "Leather Puppetry"] },
-  { id: "natural-fibres", name: "Natural Fibres", tagline: "Eco-Friendly Craft", color: "from-[#7cb69d] to-[#4a8f6d]", productCount: 67, subcategories: ["Palm Leaf Craft", "Walking Sticks", "Bamboo Craft"] },
-  { id: "wood", name: "Wood Crafts & Toys", tagline: "Artisan Woodwork", color: "from-[#a0522d] to-[#6b3a1f]", productCount: 203, subcategories: ["Kondapalli Toys", "Etikoppaka Lacquerware", "Bobbili Veena", "Wooden Statues"] },
-  { id: "mineral", name: "Natural Minerals", tagline: "Earth's Artistry", color: "from-[#8b9eb3] to-[#5a7186]", productCount: 45, subcategories: ["Stone Carvings - Durgi", "Pottery / Terracotta"] },
-  { id: "jewelry", name: "Jewelry", tagline: "Traditional Adornments", color: "from-[#c9a227] to-[#9a7b1a]", productCount: 78, subcategories: ["Imitation Jewellery", "Temple Jewelry"] },
-  { id: "carpets", name: "Carpets", tagline: "Woven Excellence", color: "from-[#8b4513] to-[#654321]", productCount: 34, subcategories: ["Hand-Knotted Carpets (Eluru)"] },
+  { id: "textiles", name: "Textile & Weaves", tagline: "Heritage Fabrics", color: "from-[#d4a574] to-[#a67c52]", productCount: 156, image: "/cat/cat-textiles.png", subcategories: ["Kalamkari Textile Prints", "Crochet Lace", "Applique / Embroidery Work"] },
+  { id: "metal", name: "Metal Crafts", tagline: "Timeless Metalwork", color: "from-[#b8860b] to-[#8b6914]", productCount: 89, image: "/cat/cat-metal.png", subcategories: ["Brassware", "Bronze Castings", "Onipenta / Budithi Styles"] },
+  { id: "paintings", name: "Paintings", tagline: "Artistic Heritage", color: "from-[#c97b7b] to-[#8f4a4a]", productCount: 124, image: "/cat/cat-paintings.png", subcategories: ["Pen Kalamkari", "Savara / Adivasi Tribal", "Tanjore Paintings", "Leather Puppetry"] },
+  { id: "natural-fibres", name: "Natural Fibres", tagline: "Eco-Friendly Craft", color: "from-[#7cb69d] to-[#4a8f6d]", productCount: 67, image: "/cat/cat-fibres.png", subcategories: ["Palm Leaf Craft", "Walking Sticks", "Bamboo Craft"] },
+  { id: "wood", name: "Wood Crafts & Toys", tagline: "Artisan Woodwork", color: "from-[#a0522d] to-[#6b3a1f]", productCount: 203, image: "/cat/cat-wood.png", subcategories: ["Kondapalli Toys", "Etikoppaka Lacquerware", "Bobbili Veena", "Wooden Statues"] },
+  { id: "mineral", name: "Natural Minerals", tagline: "Earth's Artistry", color: "from-[#8b9eb3] to-[#5a7186]", productCount: 45, image: "/cat/cat-mineral.png", subcategories: ["Stone Carvings - Durgi", "Pottery / Terracotta"] },
+  { id: "spiritual", name: "Spiritual & Pooja", tagline: "Divine Essentials", color: "from-[#c9a227] to-[#9a7b1a]", productCount: 78, image: "/cat/cat-spiritual.png", subcategories: ["Agarbatti", "Dhoop", "Malas", "Pooja Items"] },
+  { id: "carpets", name: "Carpets", tagline: "Woven Excellence", color: "from-[#8b4513] to-[#654321]", productCount: 34, image: "/cat/cat-carpets.png", subcategories: ["Hand-Knotted Carpets (Eluru)"] },
 ];
 
 // All products follow the same structure for consistent card rendering
 const spiritualProducts = [
-  { id: 18, name: "Balaji Statue Frame", price: "Rs.2,500", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 45 },
-  { id: 19, name: "Divine Photo Frames", price: "Rs.850", originalPrice: "Rs.1,000", tag: "Sale", category: "Spiritual", rating: 4.6, reviews: 32 },
-  { id: 20, name: "Premium Agarbatti Set", price: "Rs.150", originalPrice: null, tag: null, category: "Spiritual", rating: 4.9, reviews: 156 },
-  { id: 21, name: "Dhoop Sticks Set", price: "Rs.120", originalPrice: null, tag: "Popular", category: "Spiritual", rating: 4.7, reviews: 89 },
-  { id: 22, name: "Temple Perfumes", price: "Rs.450", originalPrice: null, tag: null, category: "Spiritual", rating: 4.5, reviews: 23 },
-  { id: 23, name: "Tulsi Mala", price: "Rs.350", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 67 },
-  { id: 24, name: "Rudraksha Beads", price: "Rs.1,200", originalPrice: "Rs.1,500", tag: "Premium", category: "Spiritual", rating: 4.9, reviews: 78 },
+  { id: 18, name: "Premium Agarbatti 10-in-1", price: "Rs.150", originalPrice: null, tag: "Bestseller", category: "Spiritual", rating: 4.9, reviews: 156, image: "/spiritual/spiritual-agarbatti.png" },
+  { id: 19, name: "Rudraksha Mala", price: "Rs.1,200", originalPrice: "Rs.1,500", tag: "Premium", category: "Spiritual", rating: 4.9, reviews: 78, image: "/spiritual/spiritual-rudraksha.png" },
+  { id: 20, name: "Bronze Singing Bowl", price: "Rs.2,500", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 45, image: "/spiritual/spiritual-singing-bowl.png" },
+  { id: 21, name: "Pure Sandal Powder", price: "Rs.450", originalPrice: null, tag: "Popular", category: "Spiritual", rating: 4.7, reviews: 89, image: "/spiritual/spiritual-sandal.png" },
+  { id: 22, name: "Tulsi Mala", price: "Rs.350", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 67, image: "/spiritual/spiritual-tulsi.png" },
+  { id: 23, name: "Tulsi Mala", price: "Rs.350", originalPrice: null, tag: null, category: "Spiritual", rating: 4.8, reviews: 67, image: "/spiritual/spiritual-tulsi.png" },
+
 ];
 
 // COMMENTED OUT - No inventory currently available
@@ -193,8 +198,11 @@ const spiritualProducts = [
 
 // Category Banner Cards Data
 const categoryBanners = [
-  { id: "kalamkari", name: "Kalamkari Textiles", tagline: "Ancient Pen Art", image: "/banners/kalamkari.jpg", color: "bg-[#F5E8C8]" },
-  { id: "kondapalli", name: "Kondapalli Toys", tagline: "Wooden Wonders", image: "/banners/kondapalli.jpg", color: "bg-[#8B7355]" },
+  { id: "kalamkari", name: "Kalamkari Art", tagline: "Rama Pattabhishekam", description: "Hand-painted mythological masterpieces", image: "/banner/banner-kalamkari.png", href: "/handicrafts/paintings", bgColor: "from-[#c97b7b] to-[#8f4a4a]" },
+  { id: "kondapalli", name: "Kondapalli Toys", tagline: "Dashavatar Set", description: "Traditional wooden toy collection", image: "/banner/banner-kondapalli.png", href: "/handicrafts/wood/kondapalli", bgColor: "from-[#a0522d] to-[#6b3a1f]" },
+  { id: "brass", name: "Pembarthi Brass", tagline: "Ram Darbar", description: "Exquisite temple brass artwork", image: "/banner/banner-brass.png", href: "/handicrafts/metal", bgColor: "from-[#b8860b] to-[#8b6914]" },
+  { id: "etikoppaka", name: "Etikoppaka Lacquer", tagline: "Bridal Set", description: "Colorful wooden lacquerware", image: "/banner/banner-etikoppaka.png", href: "/handicrafts/wood/etikoppaka", bgColor: "from-[#7cb69d] to-[#4a8f6d]" },
+  { id: "spiritual", name: "Spiritual Collection", tagline: "Agarbatti Collection", description: "Traditional pooja essentials", image: "/banner/banner-spiritual.png", href: "/spiritual/spiritual", bgColor: "from-[#c9a227] to-[#9a7b1a]" },
 ];
 
 // Store Locations Data
@@ -204,14 +212,16 @@ const storeLocations = [
     address: "Gunfoundry, Abids Road, Near GPO, Hyderabad, Telangana 500001",
     hours: "Monday to Saturday - 10:30 am - 7:30 pm",
     phone: "040 2320 1648",
-    mapLink: "#"
+    mapLink: "#",
+    image: "/store/store-hyderabad.png"
   },
   {
     name: "Lepakshi Vijayawada",
     address: "Governorpet, Near PWD Grounds, Vijayawada, Andhra Pradesh 520002",
     hours: "Monday to Saturday - 10 am - 8 pm",
     phone: "0866 257 1234",
-    mapLink: "#"
+    mapLink: "#",
+    image: "/store/store-vijayawada.png"
   }
 ];
 
@@ -223,23 +233,23 @@ const editorialStories = [
     excerpt: "Explore the 3000-year-old art of hand-painting mythological tales on fabric using natural dyes.",
     category: "Heritage Craft",
     readTime: "5 min read",
-    image: "/stories/kalamkari.jpg"
+    image: "/stories/story-kalamkari.png"
   },
   {
     id: 2,
-    title: "The Colorful World of Etikoppaka Lacquerware",
-    excerpt: "How artisans transform Ankudu wood into vibrant toys using lac extracted from insects.",
+    title: "Kondapalli Artisans: Preserving Wooden Heritage",
+    excerpt: "Meet the skilled craftsmen keeping alive the 400-year tradition of Kondapalli wooden toys.",
     category: "Artisan Spotlight",
     readTime: "4 min read",
-    image: "/stories/etikoppaka.jpg"
+    image: "/stories/story-kondapalli.png"
   },
-  {
+    {
     id: 3,
-    title: "Pembarthi Brass: The Metal of the Gods",
-    excerpt: "Centuries of craftsmanship behind the temple art that adorns shrines across India.",
-    category: "Craft Legacy",
-    readTime: "6 min read",
-    image: "/stories/pembarthi.jpg"
+    title: "Kondapalli Artisans: Preserving Wooden Heritage",
+    excerpt: "Meet the skilled craftsmen keeping alive the 400-year tradition of Kondapalli wooden toys.",
+    category: "Artisan Spotlight",
+    readTime: "4 min read",
+    image: "/stories/story-kondapalli.png"
   }
 ];
 
@@ -262,11 +272,13 @@ const etikoppakaProducts = [
 ];
 
 const featuredProducts = [
-  { id: 1, name: "Srikalahasti Kalamkari Saree", price: "Rs.15,500", originalPrice: "Rs.18,000", tag: "Bestseller", category: "Textiles", rating: 4.9, reviews: 156 },
-  { id: 2, name: "Hand-painted Kalamkari Dupatta", price: "Rs.4,990", originalPrice: null, tag: "New", category: "Textiles", rating: 4.7, reviews: 43 },
-  { id: 3, name: "Pembarthi Brass Diya Set", price: "Rs.6,900", originalPrice: null, tag: null, category: "Metal Crafts", rating: 4.8, reviews: 89 },
-  { id: 4, name: "Tanjore Painting - Lakshmi", price: "Rs.12,500", originalPrice: "Rs.14,000", tag: "Premium", category: "Paintings", rating: 4.9, reviews: 67 },
-  { id: 5, name: "Kondapalli Dancing Doll", price: "Rs.2,800", originalPrice: "Rs.3,200", tag: "Bestseller", category: "Wood Crafts", rating: 4.8, reviews: 92 },
+  { id: 1, name: "Srikalahasti Kalamkari Saree", price: "Rs.15,500", originalPrice: "Rs.18,000", tag: "Bestseller", category: "Textiles", rating: 4.9, reviews: 156, image: "/feat/feat-kalamkari-saree.png" },
+  { id: 2, name: "Pembarthi Brass Natya Ganapathi", price: "Rs.6,900", originalPrice: null, tag: "Popular", category: "Metal Crafts", rating: 4.8, reviews: 89, image: "/feat/feat-brass-ganapathi.png" },
+  { id: 3, name: "Tanjore Painting - Radha Krishna", price: "Rs.12,500", originalPrice: "Rs.14,000", tag: "Premium", category: "Paintings", rating: 4.9, reviews: 67, image: "/feat/feat-tanjore-painting.png" },
+  { id: 4, name: "Kondapalli Ambari Elephant", price: "Rs.5,200", originalPrice: "Rs.6,000", tag: "Bestseller", category: "Wood Crafts", rating: 4.8, reviews: 92, image: "/feat/feat-kondapalli-elephant.png" },
+  { id: 5, name: "Etikoppaka Bridal Set", price: "Rs.3,200", originalPrice: "Rs.3,800", tag: "New", category: "Wood Crafts", rating: 4.9, reviews: 56, image: "/feat/feat-etikoppaka-bridal.png" },
+  { id: 6, name: "Etikoppaka Bridal Set", price: "Rs.3,200", originalPrice: "Rs.3,800", tag: "New", category: "Wood Crafts", rating: 4.9, reviews: 56, image: "/feat/feat-etikoppaka-bridal.png" },
+
 ];
 
 // ============================================
@@ -297,76 +309,167 @@ interface Product {
   category?: string;
   rating?: number;
   reviews?: number;
+  image?: string;
 }
 
-const ProductCard = ({ product, showCategory = false, dark = false }: { product: Product; showCategory?: boolean; dark?: boolean }) => (
-  <Link href={`/products/${product.id}`}>
-    <motion.div
-      className="group block cursor-pointer"
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3 }}
-    >
-    {/* Product Image - Consistent 3:4 aspect ratio */}
-    <div className="aspect-[3/4] bg-[#f7f5f0] mb-4 relative overflow-hidden border border-[#e5e0d5] group-hover:border-[#c9a227] transition-all duration-300 group-hover:shadow-xl">
-      {/* Placeholder Image Area */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#f0ebe3] to-[#e5dfd4] flex items-center justify-center">
-        <div className="w-20 h-20 rounded-full bg-white/80 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
-          <svg className="w-10 h-10 text-[#c9a227]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <path d="M21 15l-5-5L5 21" />
+// Map homepage category names to URL paths (new hierarchical structure)
+const getCategoryUrl = (category?: string): string => {
+  const categoryMap: Record<string, string> = {
+    "Kondapalli": "/handicrafts/wood/kondapalli",
+    "Etikoppaka": "/handicrafts/wood/etikoppaka",
+    "Spiritual": "/spiritual/spiritual",
+    "Textiles": "/handicrafts/textiles",
+    "Metal Crafts": "/handicrafts/metal",
+    "Paintings": "/handicrafts/paintings",
+    "Wood Crafts": "/handicrafts/wood",
+  };
+  return categoryMap[category || ""] || "/handicrafts";
+};
+
+// Map homepage category names to centralized data IDs
+const getCategoryIds = (category?: string): { categoryId: string; subcategoryId: string } => {
+  const idMap: Record<string, { categoryId: string; subcategoryId: string }> = {
+    "Kondapalli": { categoryId: "wood", subcategoryId: "kondapalli" },
+    "Etikoppaka": { categoryId: "wood", subcategoryId: "etikoppaka" },
+    "Spiritual": { categoryId: "spiritual", subcategoryId: "agarbatti" },
+    "Textiles": { categoryId: "textiles", subcategoryId: "kalamkari-prints" },
+    "Metal Crafts": { categoryId: "metal", subcategoryId: "brassware" },
+    "Paintings": { categoryId: "paintings", subcategoryId: "pen-kalamkari" },
+    "Wood Crafts": { categoryId: "wood", subcategoryId: "kondapalli" },
+  };
+  return idMap[category || ""] || { categoryId: "wood", subcategoryId: "kondapalli" };
+};
+
+const ProductCard = ({ product, showCategory = false, dark = false }: { product: Product; showCategory?: boolean; dark?: boolean }) => {
+  const { addItem: addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
+  // Convert string price to number for cart
+  const parsePrice = (priceStr: string) => {
+    return parseInt(priceStr.replace(/[^0-9]/g, '')) || 0;
+  };
+
+  // Get category/subcategory IDs based on product category
+  const { categoryId, subcategoryId } = getCategoryIds(product.category);
+
+  // Convert homepage product to cart-compatible format
+  const toCartProduct = (): CentralProduct => ({
+    id: product.id,
+    name: product.name,
+    slug: product.name.toLowerCase().replace(/\s+/g, '-'),
+    price: parsePrice(product.price),
+    originalPrice: product.originalPrice ? parsePrice(product.originalPrice) : undefined,
+    tag: product.tag || undefined,
+    categoryId,
+    subcategoryId,
+    image: product.image || "/products/kondapalli-dashavatar-box.png",
+    rating: product.rating || 4.5,
+    reviews: product.reviews || 0,
+    inStock: true,
+  });
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(toCartProduct());
+  };
+
+  const handleToggleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(toCartProduct());
+  };
+
+  const inWishlist = isInWishlist(product.id);
+
+  return (
+    <Link href={getCategoryUrl(product.category)}>
+      <motion.div
+        className="group block cursor-pointer"
+        whileHover={{ y: -8 }}
+        transition={{ duration: 0.3 }}
+      >
+      {/* Product Image - Consistent 3:4 aspect ratio */}
+      <div className="aspect-[3/4] bg-[black] mb-4 relative overflow-hidden border border-[#e5e0d5] group-hover:border-[#c9a227] transition-all duration-300 group-hover:shadow-xl">
+        {/* Product Image or Placeholder */}
+        {product.image ? (
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-[#f0ebe3] to-[#e5dfd4] flex items-center justify-center">
+            <div className="w-20 h-20 rounded-full bg-white/80 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-sm">
+              <svg className="w-10 h-10 text-[#c9a227]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+            </div>
+          </div>
+        )}
+
+        {/* Product Tag */}
+        {product.tag && (
+          <span className={`absolute top-3 left-3 px-2.5 py-1 text-[10px] font-medium tracking-wider z-10 ${
+            product.tag === "Bestseller" ? "bg-[#c9a227] text-white" :
+            product.tag === "Popular" ? "bg-[#7cb69d] text-white" :
+            product.tag === "New" ? "bg-[#1a1a1a] text-white" :
+            product.tag === "Premium" ? "bg-gradient-to-r from-[#c9a227] to-[#f7d794] text-white" :
+            product.tag === "Sale" ? "bg-[#c97b7b] text-white" :
+            "bg-white text-[#1a1a1a] border border-[#e5e0d5]"
+          }`}>
+            {product.tag}
+          </span>
+        )}
+
+        {/* Wishlist Button */}
+        <button
+          onClick={handleToggleWishlist}
+          className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md z-10 ${
+            inWishlist
+              ? "bg-red-500 text-white"
+              : "bg-white hover:bg-[#c9a227] hover:text-white"
+          }`}
+        >
+          <svg className="w-4 h-4" fill={inWishlist ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
           </svg>
+        </button>
+
+        {/* Add to Cart Button */}
+        <button
+          onClick={handleAddToCart}
+          className="absolute bottom-0 left-0 right-0 py-3 bg-[#c9a227] text-white text-xs font-medium tracking-wider opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-full group-hover:translate-y-0 z-10 hover:bg-[#b8922a]"
+        >
+          ADD TO CART
+        </button>
+      </div>
+
+      {/* Product Info */}
+      <div className="space-y-1.5">
+        {showCategory && product.category && (
+          <p className="text-[#c9a227] text-xs tracking-wider uppercase">{product.category}</p>
+        )}
+        <h3 className={`text-sm font-medium group-hover:text-[#c9a227] transition-colors line-clamp-2 leading-snug ${dark ? "text-white" : "text-[#1a1a1a]"}`}>
+          {product.name}
+        </h3>
+        {product.rating && product.reviews && (
+          <StarRating rating={product.rating} reviews={product.reviews} dark={dark} />
+        )}
+        <div className="flex items-center gap-2 pt-1">
+          <span className={`font-semibold ${dark ? "text-white" : "text-[#1a1a1a]"}`}>{product.price}</span>
+          {product.originalPrice && (
+            <span className={`line-through text-sm ${dark ? "text-white/50" : "text-[#999]"}`}>{product.originalPrice}</span>
+          )}
         </div>
       </div>
-
-      {/* Product Tag */}
-      {product.tag && (
-        <span className={`absolute top-3 left-3 px-2.5 py-1 text-[10px] font-medium tracking-wider z-10 ${
-          product.tag === "Bestseller" ? "bg-[#c9a227] text-white" :
-          product.tag === "Popular" ? "bg-[#7cb69d] text-white" :
-          product.tag === "New" ? "bg-[#1a1a1a] text-white" :
-          product.tag === "Premium" ? "bg-gradient-to-r from-[#c9a227] to-[#f7d794] text-white" :
-          product.tag === "Sale" ? "bg-[#c97b7b] text-white" :
-          "bg-white text-[#1a1a1a] border border-[#e5e0d5]"
-        }`}>
-          {product.tag}
-        </span>
-      )}
-
-      {/* Wishlist Button */}
-      <button className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 shadow-md hover:bg-[#c9a227] hover:text-white z-10">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-        </svg>
-      </button>
-
-      {/* Add to Cart Button */}
-      <button className="absolute bottom-0 left-0 right-0 py-3 bg-[#c9a227] text-white text-xs font-medium tracking-wider opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-full group-hover:translate-y-0 z-10 hover:bg-[#b8922a]">
-        ADD TO CART
-      </button>
-    </div>
-
-    {/* Product Info */}
-    <div className="space-y-1.5">
-      {showCategory && product.category && (
-        <p className="text-[#c9a227] text-xs tracking-wider uppercase">{product.category}</p>
-      )}
-      <h3 className={`text-sm font-medium group-hover:text-[#c9a227] transition-colors line-clamp-2 leading-snug ${dark ? "text-white" : "text-[#1a1a1a]"}`}>
-        {product.name}
-      </h3>
-      {product.rating && product.reviews && (
-        <StarRating rating={product.rating} reviews={product.reviews} dark={dark} />
-      )}
-      <div className="flex items-center gap-2 pt-1">
-        <span className={`font-semibold ${dark ? "text-white" : "text-[#1a1a1a]"}`}>{product.price}</span>
-        {product.originalPrice && (
-          <span className={`line-through text-sm ${dark ? "text-white/50" : "text-[#999]"}`}>{product.originalPrice}</span>
-        )}
-      </div>
-    </div>
-    </motion.div>
-  </Link>
-);
+      </motion.div>
+    </Link>
+  );
+};
 
 // Animated Stat Counter Component
 const AnimatedStat = ({ number, label }: { number: string; label: string }) => {
@@ -472,38 +575,140 @@ const ProductCarousel = ({
   );
 };
 
+// Banner Carousel Component
+const BannerCarousel = () => {
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: "start",
+      slidesToScroll: 1,
+      containScroll: false
+    },
+    [Autoplay({ delay: 5000, stopOnInteraction: true })]
+  );
+
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setCanScrollPrev(emblaApi.canScrollPrev());
+    setCanScrollNext(emblaApi.canScrollNext());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    emblaApi.on("reInit", onSelect);
+    return () => {
+      emblaApi.off("select", onSelect);
+      emblaApi.off("reInit", onSelect);
+    };
+  }, [emblaApi, onSelect]);
+
+  return (
+    <div className="relative">
+      {/* Carousel Container */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex">
+          {categoryBanners.map((banner) => (
+            <div
+              key={banner.id}
+              className="flex-none w-[80%] sm:w-[80%] md:w-[50%] pr-4"
+            >
+              <Link href={banner.href}>
+                <motion.div
+                  className="group relative block overflow-hidden "
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="aspect-[4/3] md:aspect-[16/10] relative overflow-hidden">
+                    {/* Background Gradient (fallback) */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${banner.bgColor}`}>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-20">
+                        <svg className="w-24 h-24 sm:w-32 sm:h-32 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
+                          <rect x="3" y="3" width="18" height="18" rx="2" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <path d="M21 15l-5-5L5 21" />
+                        </svg>
+                      </div>
+                    </div>
+                    {/* Banner Image */}
+                    <Image
+                      src={banner.image}
+                      alt={banner.name}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8">
+                      <span className="inline-block px-2 py-1 bg-[#c9a227] text-white text-[10px] sm:text-xs tracking-wider uppercase mb-2">
+                        {banner.tagline}
+                      </span>
+                      <h3 className="font-[family-name:var(--font-playfair)] text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white mb-1 sm:mb-2">
+                        {banner.name}
+                      </h3>
+                      <p className="text-white/80 text-xs sm:text-sm mb-2 sm:mb-3 hidden sm:block">
+                        {banner.description}
+                      </p>
+                      <div className="flex items-center gap-2 text-white/90 text-xs sm:text-sm tracking-wider uppercase group-hover:text-[#c9a227] transition-colors">
+                        <span>Shop Now</span>
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Navigation Buttons */}
+      <button
+        onClick={scrollPrev}
+        disabled={!canScrollPrev}
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-white/90 hover:bg-[#c9a227] text-[#1a1a1a] hover:text-white rounded-full flex items-center justify-center transition-all duration-300 shadow-lg disabled:opacity-30 disabled:cursor-not-allowed z-10"
+        aria-label="Previous banner"
+      >
+        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button
+        onClick={scrollNext}
+        disabled={!canScrollNext}
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 bg-white/90 hover:bg-[#c9a227] text-[#1a1a1a] hover:text-white rounded-full flex items-center justify-center transition-all duration-300 shadow-lg disabled:opacity-30 disabled:cursor-not-allowed z-10"
+        aria-label="Next banner"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  );
+};
+
 // ============================================
 // MAIN PAGE COMPONENT
 // ============================================
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("kondapalli");
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
-
-  // Reset menu state when closing
-  const closeMenu = () => {
-    setMobileMenuOpen(false);
-    setActiveCategory(null);
-    setActiveSubcategory(null);
-  };
-
-  // Get current category data
-  const currentCategory = navigationCategories.find(c => c.id === activeCategory);
-  const currentSubcategory = currentCategory?.subcategories?.find(s => s.id === activeSubcategory);
 
   // Parallax scroll effects
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, 150]);
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
   const heroScale = useTransform(scrollY, [0, 500], [1, 1.1]);
-
-  // Track scroll for header background change
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 50);
-  });
 
   return (
     <>
@@ -517,366 +722,7 @@ export default function Home() {
         </motion.div>
 
         {/* Header */}
-        <motion.header
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-            mobileMenuOpen || isScrolled
-              ? "bg-[#f3e6c6]  border-[#e5e5e5] shadow-sm"
-              : "bg-transparent border-b border-transparent"
-          }`}
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          {/* Top Bar */}
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <div className="flex items-center justify-between h-20">
-              {/* Left - Menu & Search */}
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => mobileMenuOpen ? closeMenu() : setMobileMenuOpen(true)}
-                  className={`transition-colors duration-300 p-2 flex items-center gap-2 ${
-                    mobileMenuOpen || isScrolled
-                      ? "text-[#1a1a1a] hover:text-[#c9a227]"
-                      : "text-white hover:text-[#c9a227]"
-                  }`}
-                >
-                  <div className="relative w-6 h-6">
-                    <motion.span
-                      className="absolute left-0 top-[6px] w-6 h-0.5 bg-current"
-                      animate={mobileMenuOpen ? { rotate: 45, y: 5 } : { rotate: 0, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <motion.span
-                      className="absolute left-0 top-[11px] w-6 h-0.5 bg-current"
-                      animate={mobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <motion.span
-                      className="absolute left-0 top-[16px] w-6 h-0.5 bg-current"
-                      animate={mobileMenuOpen ? { rotate: -45, y: -5 } : { rotate: 0, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                  </div>
-                  <span className="hidden sm:inline text-sm font-medium tracking-wide">
-                    {mobileMenuOpen ? "CLOSE" : "MENU"}
-                  </span>
-                </button>
-                <button className={`transition-colors duration-300 p-2 ${
-                  mobileMenuOpen || isScrolled
-                    ? "text-[#1a1a1a] hover:text-[#c9a227]"
-                    : "text-white hover:text-[#c9a227]"
-                }`}>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Center - Logo */}
-              <Link href="/" className="absolute left-1/2 -translate-x-1/2">
-                <img
-                  src="/logo.png"
-                  alt="Lepakshi"
-                  className={`h-12 transition-all duration-300 ${(mobileMenuOpen || isScrolled) ? "" : "brightness-0 invert"}`}
-                />
-              </Link>
-
-              {/* Right - Actions */}
-              <div className="flex items-center gap-3 sm:gap-5">
-                <Link href="/wishlist" className={`transition-colors duration-300 p-2 ${
-                  mobileMenuOpen || isScrolled
-                    ? "text-[#1a1a1a] hover:text-[#c9a227]"
-                    : "text-white hover:text-[#c9a227]"
-                }`}>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                  </svg>
-                </Link>
-                <Link href="/cart" className={`transition-colors duration-300 p-2 relative ${
-                  mobileMenuOpen || isScrolled
-                    ? "text-[#1a1a1a] hover:text-[#c9a227]"
-                    : "text-white hover:text-[#c9a227]"
-                }`}>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                  </svg>
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#c9a227] text-white text-[10px] font-semibold flex items-center justify-center rounded-full">2</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-        </motion.header>
-
-        {/* Sliding Menu Drawer with Multi-Level Navigation */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                onClick={closeMenu}
-                className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
-              />
-
-              {/* Sliding Drawer - White Theme */}
-              <motion.div
-                initial={{ x: "-100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "-100%" }}
-                transition={{ type: "tween", duration: 0.4, ease: "easeOut" }}
-                className="fixed top-20 left-0 bottom-0 bg-white z-40 overflow-hidden flex shadow-2xl"
-              >
-                {/* Golden accent line */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#c9a227] via-[#f7d794] to-[#c9a227]" />
-
-                {/* Main Categories Panel - Fixed Width */}
-                <div
-                  className={`${activeCategory ? 'hidden sm:block' : 'block'} w-full sm:w-[260px] lg:w-[280px] border-r border-[#e5e5e5] flex-shrink-0`}
-                >
-                  <div className="h-full overflow-y-auto py-6">
-                    {/* Title */}
-                    <div className="px-6 mb-6">
-                      <p className="text-[#c9a227] text-[10px] tracking-[0.3em] uppercase mb-1">Explore</p>
-                      <h3 className="text-[#1a1a1a] text-xl font-[family-name:var(--font-playfair)]">Categories</h3>
-                    </div>
-
-                    {/* Category List */}
-                    <div className="space-y-1">
-                      {navigationCategories.map((category, idx) => (
-                        <motion.button
-                          key={category.id}
-                          initial={{ x: -30, opacity: 0 }}
-                          animate={{ x: 0, opacity: 1 }}
-                          transition={{ duration: 0.3, delay: idx * 0.05 }}
-                          onClick={() => {
-                            setActiveCategory(category.id);
-                            setActiveSubcategory(null);
-                          }}
-                          className={`w-full group flex items-center justify-between px-6 py-4 transition-all duration-300 ${
-                            activeCategory === category.id
-                              ? 'bg-[#f5f5f5] border-l-3 border-[#c9a227]'
-                              : 'hover:bg-[#fafafa] border-l-3 border-transparent hover:border-[#c9a227]/50'
-                          }`}
-                        >
-                          <div className="flex items-center gap-4">
-                            <span className={`w-2 h-2 rounded-full transition-colors ${
-                              activeCategory === category.id ? 'bg-[#c9a227]' : 'bg-[#d0d0d0] group-hover:bg-[#c9a227]'
-                            }`} />
-                            <span className={`text-sm font-medium transition-colors ${
-                              activeCategory === category.id ? 'text-[#c9a227]' : 'text-[#3d3428] group-hover:text-[#1a1a1a]'
-                            }`}>
-                              {category.name}
-                            </span>
-                          </div>
-                          <motion.svg
-                            className={`w-4 h-4 transition-colors ${
-                              activeCategory === category.id ? 'text-[#c9a227]' : 'text-[#999] group-hover:text-[#c9a227]'
-                            }`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            animate={{ x: activeCategory === category.id ? 3 : 0 }}
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </motion.svg>
-                        </motion.button>
-                      ))}
-                    </div>
-
-                    {/* Quick Links */}
-                    <div className="mt-8 pt-6 mx-6 border-t border-[#e5e5e5]">
-                      <div className="space-y-3">
-                        {[
-                          { label: "All Products", href: "/products" },
-                          { label: "Our Story", href: "#" },
-                          { label: "Contact", href: "#" }
-                        ].map((link) => (
-                          <Link
-                            key={link.label}
-                            href={link.href}
-                            onClick={closeMenu}
-                            className="block text-sm text-[#666] hover:text-[#c9a227] transition-colors"
-                          >
-                            {link.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Subcategories Panel - Fixed Width */}
-                <AnimatePresence mode="wait">
-                  {activeCategory && currentCategory && (
-                    <motion.div
-                      key={activeCategory}
-                      initial={{ x: 50, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      exit={{ x: 50, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`${activeSubcategory && currentCategory.subcategories ? 'hidden sm:block' : 'block'} w-full sm:w-[240px] lg:w-[260px] bg-[#f8f8f8] border-r border-[#e5e5e5] flex-shrink-0`}
-                    >
-                      <div className="h-full overflow-y-auto py-6">
-                        {/* Back button (mobile) */}
-                        <button
-                          onClick={() => setActiveCategory(null)}
-                          className="sm:hidden flex items-center gap-2 px-6 mb-4 text-[#666] hover:text-[#c9a227] transition-colors"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                          </svg>
-                          <span className="text-sm">Back</span>
-                        </button>
-
-                        {/* Category Title */}
-                        <div className="px-6 mb-6">
-                          <p className="text-[#c9a227] text-[10px] tracking-[0.3em] uppercase mb-1">{currentCategory.name}</p>
-                          <Link
-                            href={`/products?category=${currentCategory.id}`}
-                            onClick={closeMenu}
-                            className="text-[#666] text-xs hover:text-[#c9a227] flex items-center gap-1 mt-1"
-                          >
-                            View all
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                          </Link>
-                        </div>
-
-                        {/* Subcategories or Items */}
-                        {currentCategory.subcategories ? (
-                          <div className="space-y-1">
-                            {currentCategory.subcategories.map((sub, idx) => (
-                              <motion.button
-                                key={sub.id}
-                                initial={{ x: 20, opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ duration: 0.2, delay: idx * 0.03 }}
-                                onClick={() => setActiveSubcategory(sub.id)}
-                                className={`w-full group flex items-center justify-between px-6 py-3 transition-all duration-300 ${
-                                  activeSubcategory === sub.id
-                                    ? 'bg-white border-l-2 border-[#c9a227]'
-                                    : 'hover:bg-white/80 border-l-2 border-transparent hover:border-[#c9a227]/50'
-                                }`}
-                              >
-                                <span className={`text-sm transition-colors ${
-                                  activeSubcategory === sub.id ? 'text-[#c9a227]' : 'text-[#3d3428] group-hover:text-[#1a1a1a]'
-                                }`}>
-                                  {sub.name}
-                                </span>
-                                <svg
-                                  className={`w-3 h-3 transition-colors ${
-                                    activeSubcategory === sub.id ? 'text-[#c9a227]' : 'text-[#999] group-hover:text-[#c9a227]'
-                                  }`}
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                              </motion.button>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="px-6 space-y-2">
-                            {currentCategory.items?.map((item, idx) => (
-                              <motion.div
-                                key={item}
-                                initial={{ y: 10, opacity: 0 }}
-                                animate={{ y: 0, opacity: 1 }}
-                                transition={{ duration: 0.2, delay: idx * 0.03 }}
-                              >
-                                <Link
-                                  href={`/products?item=${encodeURIComponent(item)}`}
-                                  onClick={closeMenu}
-                                  className="block py-2 text-sm text-[#3d3428] hover:text-[#c9a227] transition-colors"
-                                >
-                                  {item}
-                                </Link>
-                              </motion.div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {/* Items Panel (Third Level) - Fixed Width */}
-                <AnimatePresence mode="wait">
-                  {activeSubcategory && currentSubcategory && (
-                    <motion.div
-                      key={activeSubcategory}
-                      initial={{ x: 50, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      exit={{ x: 50, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="w-full sm:w-[280px] lg:w-[320px] bg-[#f2f2f2] flex-shrink-0"
-                    >
-                      <div className="h-full overflow-y-auto py-6">
-                        {/* Back button (mobile) */}
-                        <button
-                          onClick={() => setActiveSubcategory(null)}
-                          className="sm:hidden flex items-center gap-2 px-6 mb-4 text-[#666] hover:text-[#c9a227] transition-colors"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                          </svg>
-                          <span className="text-sm">Back</span>
-                        </button>
-
-                        {/* Subcategory Title */}
-                        <div className="px-6 mb-6">
-                          <p className="text-[#c9a227] text-[10px] tracking-[0.3em] uppercase mb-1">{currentSubcategory.name}</p>
-                          <Link
-                            href={`/products?category=${currentSubcategory.id}`}
-                            onClick={closeMenu}
-                            className="text-[#666] text-xs hover:text-[#c9a227] flex items-center gap-1 mt-1"
-                          >
-                            View all {currentSubcategory.name}
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                          </Link>
-                        </div>
-
-                        {/* Items List */}
-                        <div className="px-6 space-y-1">
-                          {currentSubcategory.items.map((item, idx) => (
-                            <motion.div
-                              key={item}
-                              initial={{ y: 15, opacity: 0 }}
-                              animate={{ y: 0, opacity: 1 }}
-                              transition={{ duration: 0.25, delay: idx * 0.04 }}
-                            >
-                              <Link
-                                href={`/products?item=${encodeURIComponent(item)}`}
-                                onClick={closeMenu}
-                                className="group flex items-center gap-3 py-3 border-b border-[#e0e0e0] last:border-0"
-                              >
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#c9a227]/60 group-hover:bg-[#c9a227] transition-colors" />
-                                <span className="text-sm text-[#3d3428] group-hover:text-[#c9a227] transition-colors">
-                                  {item}
-                                </span>
-                                <svg className="w-3 h-3 ml-auto text-[#999] group-hover:text-[#c9a227] opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                </svg>
-                              </Link>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+        <Header />
 
         {/* Hero Content */}
         <motion.div
@@ -1021,36 +867,38 @@ export default function Home() {
             variants={staggerContainer}
           >
             {mainCategories.map((cat, index) => (
-              <motion.a
+              <Link
                 key={cat.id}
-                href={`#${cat.id}`}
+                href={`/handicrafts/${cat.id}`}
                 className="group block"
+              >
+              <motion.div
                 variants={scaleIn}
                 whileHover={{ y: -10 }}
                 transition={{ duration: 0.3 }}
               >
                 {/* Category Image - Consistent 4:5 aspect ratio */}
                 <div className={`aspect-[4/5] relative overflow-hidden bg-gradient-to-br ${cat.color}`}>
+                  {/* Category Image */}
+                  {cat.image && (
+                    <Image
+                      src={cat.image}
+                      alt={cat.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  {/* Placeholder Icon */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <svg className="w-8 h-8 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
-                        <rect x="3" y="3" width="18" height="18" rx="2" />
-                        <circle cx="8.5" cy="8.5" r="1.5" />
-                        <path d="M21 15l-5-5L5 21" />
-                      </svg>
-                    </div>
-                  </div>
                   {/* Category Info */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
                     <span className="text-[#f7d794] text-[10px] tracking-[0.3em] uppercase mb-1 block">{cat.tagline}</span>
-                    <h3 className="font-[family-name:var(--font-playfair)] text-xl text-white mb-1">{cat.name}</h3>
+                    <h3 className="font-[family-name:var(--font-playfair)] text-lg sm:text-xl text-white mb-1">{cat.name}</h3>
                     <p className="text-white/60 text-xs">{cat.productCount} Products</p>
                   </div>
                   <div className="absolute inset-0 bg-[#c9a227]/0 group-hover:bg-[#c9a227]/20 transition-colors duration-500" />
                 </div>
-              </motion.a>
+              </motion.div>
+              </Link>
             ))}
           </motion.div>
         </div>
@@ -1091,50 +939,20 @@ export default function Home() {
         </div>
       </AnimatedSection>
 
-      {/* ========== CATEGORY BANNER CARDS ========== */}
-      <AnimatedSection className="py-16 px-6 bg-white">
+      {/* ========== CATEGORY BANNER CAROUSEL ========== */}
+      <AnimatedSection className="py-12 sm:py-16 px-4 sm:px-6 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-6">
-            {categoryBanners.map((banner, index) => (
-              <motion.a
-                key={banner.id}
-                href={`#${banner.id}`}
-                className="group relative block overflow-hidden"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{ scale: 1.02 }}
-              >
-                <div className="aspect-[4/3] md:aspect-[16/10] relative overflow-hidden bg-[#F5E8C8]">
-                  {/* Placeholder Background */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#F5E8C8] to-[#e8d9b8]">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-32 h-32 rounded-full bg-white/40 flex items-center justify-center">
-                        <svg className="w-16 h-16 text-[#c9a227]/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
-                          <rect x="3" y="3" width="18" height="18" rx="2" />
-                          <circle cx="8.5" cy="8.5" r="1.5" />
-                          <path d="M21 15l-5-5L5 21" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8">
-                    <h3 className="font-[family-name:var(--font-playfair)] text-3xl md:text-4xl text-white mb-3">{banner.name}</h3>
-                    <div className="flex items-center gap-2 text-white/90 text-sm tracking-wider uppercase group-hover:text-[#E0AE31] transition-colors">
-                      <span>Shop Our Edit</span>
-                      <svg className="w-4 h-4 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </motion.a>
-            ))}
-          </div>
+          <motion.div
+            className="text-center mb-8 sm:mb-12"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUp}
+          >
+            <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-[#c9a227] to-[#f7d794] text-white text-xs tracking-[0.3em] uppercase mb-4 shadow-sm">Curated Collections</span>
+            <h2 className="font-[family-name:var(--font-playfair)] text-3xl sm:text-4xl md:text-5xl text-[#1a1a1a]">Shop by <span className="italic text-[#c9a227]">Category</span></h2>
+          </motion.div>
+          <BannerCarousel />
         </div>
       </AnimatedSection>
 
@@ -1160,7 +978,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            <Link href="/products?category=spiritual">
+            <Link href="/spiritual/spiritual">
               <motion.div
                 className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-10 py-3 sm:py-4 border-2 border-[#c9a227] text-[#c9a227] text-sm sm:text-base font-medium tracking-wider hover:bg-[#c9a227] hover:text-white transition-all whitespace-nowrap cursor-pointer"
                 whileHover={{ scale: 1.02 }}
@@ -1460,7 +1278,7 @@ export default function Home() {
 
           {/* Store Cards */}
           <div className="grid lg:grid-cols-3 gap-0 overflow-hidden">
-            {/* Left Image */}
+            {/* Left Image - Hyderabad Store */}
             <motion.div
               className="aspect-[4/3] lg:aspect-auto relative overflow-hidden bg-[#d4c4a8]"
               initial={{ opacity: 0, x: -50 }}
@@ -1468,13 +1286,21 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
+              {/* Background Fallback */}
+              <div className="absolute bg-white inset-0 flex items-center justify-center">
                 <div className="w-24 h-24 rounded-full bg-white/30 flex items-center justify-center">
                   <svg className="w-12 h-12 text-[#596C45]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
                     <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
                 </div>
               </div>
+              {/* Store Image */}
+              <Image
+                src={storeLocations[0].image}
+                alt={storeLocations[0].name}
+                fill
+                className="object-cover"
+              />
             </motion.div>
 
             {/* Center Info Card */}
@@ -1543,7 +1369,7 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Right Image */}
+            {/* Right Image - Vijayawada Store */}
             <motion.div
               className="aspect-[4/3] lg:aspect-auto relative overflow-hidden bg-[#c9b896]"
               initial={{ opacity: 0, x: 50 }}
@@ -1551,13 +1377,21 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
+              {/* Background Fallback */}
+              <div className="absolute bg-white inset-0 flex items-center justify-center">
                 <div className="w-24 h-24 rounded-full bg-white/30 flex items-center justify-center">
                   <svg className="w-12 h-12 text-[#596C45]/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
                     <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                   </svg>
                 </div>
               </div>
+              {/* Store Image */}
+              <Image
+                src={storeLocations[1].image}
+                alt={storeLocations[1].name}
+                fill
+                className="object-cover"
+              />
             </motion.div>
           </div>
         </div>
@@ -1596,6 +1430,7 @@ export default function Home() {
               >
                 {/* Story Image */}
                 <div className="aspect-[4/3] relative overflow-hidden bg-[#e8e2d9] mb-6">
+                  {/* Fallback Placeholder */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-20 h-20 rounded-full bg-white/50 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <svg className="w-10 h-10 text-[#596C45]/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
@@ -1605,8 +1440,15 @@ export default function Home() {
                       </svg>
                     </div>
                   </div>
+                  {/* Story Image */}
+                  <Image
+                    src={story.image}
+                    alt={story.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                   {/* Category Badge */}
-                  <span className="absolute top-4 left-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm text-[10px] font-medium tracking-wider uppercase text-[#596C45]">
+                  <span className="absolute top-4 left-4 px-3 py-1.5 bg-white/90 backdrop-blur-sm text-[10px] font-medium tracking-wider uppercase text-[#596C45] z-10">
                     {story.category}
                   </span>
                   {/* Hover Overlay */}
