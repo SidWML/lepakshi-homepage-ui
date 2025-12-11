@@ -213,7 +213,7 @@ export const products: Product[] = [
   },
   {
     id: 2,
-    name: "Kondapalli Ambari Elephant",
+    name: "Kondapalli Ambari Elephant - 8 Inch",
     slug: "kondapalli-ambari-elephant",
     price: 5200,
     originalPrice: 6000,
@@ -587,7 +587,7 @@ export const products: Product[] = [
   },
   {
     id: 21,
-    name: "Etikoppaka Bridal Couple Set",
+    name: "Etikoppaka Bridal Couple Set - 8 inches",
     slug: "etikoppaka-bridal-couple-set",
     price: 1155,
     tag: "New",
