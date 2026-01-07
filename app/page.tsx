@@ -712,6 +712,7 @@ export default function Home() {
 
   return (
     <>
+      {/*  */}
       {/* Hero Section */}
       <section className="relative min-h-screen bg-[#1a1a1a] overflow-hidden">
         <motion.div className="absolute inset-0" style={{ scale: heroScale }}>
@@ -825,6 +826,8 @@ export default function Home() {
         </motion.div>
       </section>
 
+      
+      
       {/* Marquee */}
       <div className="bg-[#c9a227] py-3 overflow-hidden">
         <div className="flex animate-marquee whitespace-nowrap">
